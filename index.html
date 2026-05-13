@@ -168,6 +168,13 @@
     display: flex; align-items: center; justify-content: center;
   }
   .serie-row .check.done { background: var(--ok); color: white; border-color: var(--ok); }
+  .bw-tag {
+    padding: 10px 6px;
+    background: var(--core); color: #2e5d1f;
+    border-radius: 8px; text-align: center;
+    font-size: 12px; font-weight: 600;
+    border: 1px solid #c8e6c9;
+  }
   .serie-row .apply-all { color: var(--primary); font-size: 18px; font-weight: 700; }
   .serie-row .apply-all:active { background: var(--primary-soft); }
 
@@ -240,12 +247,18 @@
     display: flex; flex-direction: column;
     font-size: 12px; color: var(--muted); gap: 4px;
     margin-bottom: 8px;
+    min-width: 0;          /* impedir overflow del grid en iOS */
   }
-  label.full-width { display: block; margin-bottom: 12px; }
+  label.full-width { display: block; margin-bottom: 12px; min-width: 0; }
   .form-grid input, label.full-width input, .select {
     padding: 10px; border: 1px solid var(--border); border-radius: 8px;
     font-size: 15px; background: var(--bg); color: var(--text);
     width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+    -webkit-appearance: none;  /* iOS quita el ancho extra del date picker */
+    appearance: none;
   }
   .form-grid input:focus, label.full-width input:focus, .select:focus {
     outline: none; border-color: var(--primary); background: white;
@@ -708,6 +721,12 @@ function aplicarATodas(btn) {
   const valReps = origenInputs[1].value;
   const valRpe  = origenInputs[2].value;
 
+  // Guardar también la propia serie origen (si no estaba ya marcada)
+  const origenCheck = btn.parentElement.querySelector(".check");
+  if (origenCheck && !origenCheck.classList.contains("done")) {
+    guardarSerie(origenCheck);
+  }
+
   // Replicar a todas las series posteriores Y marcarlas como guardadas
   let copiadas = 0;
   for (let s = serieOrigen + 1; s <= ej.series; s++) {
@@ -724,7 +743,7 @@ function aplicarATodas(btn) {
     if (check) guardarSerie(check);
     copiadas++;
   }
-  toast(copiadas ? `Copiado y marcado en ${copiadas} serie${copiadas>1?'s':''}` : "No hay series posteriores libres");
+  toast(copiadas ? `Marcadas serie 1 + ${copiadas} más` : "Serie marcada");
 }
 
 function abrirEditorNota(btn) {
@@ -801,10 +820,22 @@ function guardarSerie(btn) {
 
   saveState();
   btn.classList.add("done");
+
+  // Si no metió peso, mostrar "Peso corporal" en lugar del input vacío
+  if (peso === null) {
+    const pesoInput = inputs[0];
+    if (pesoInput && !pesoInput.classList.contains("bw-tag")) {
+      const tag = document.createElement("div");
+      tag.className = "bw-tag";
+      tag.textContent = "Peso corporal";
+      pesoInput.replaceWith(tag);
+    }
+  }
+
   if (peso || reps) {
     toast(`Serie ${serie} · ${peso || "BW"} × ${reps || "-"}`);
   } else {
-    toast(`Serie ${serie} marcada como hecha`);
+    toast(`Serie ${serie} · peso corporal`);
   }
 }
 
