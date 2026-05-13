@@ -6,6 +6,8 @@
 <meta name="theme-color" content="#1F4E78">
 <title>Mi rutina</title>
 <link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
 <style>
   :root {
     --bg: #f6f7fb;
@@ -32,7 +34,8 @@
     padding: 14px 16px 8px 16px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   }
-  header h1 { font-size: 18px; margin: 0 0 10px 0; font-weight: 600; letter-spacing: 0.2px; }
+  header h1 { font-size: 18px; margin: 0 0 10px 0; font-weight: 600; letter-spacing: 0.2px; display: flex; align-items: center; gap: 10px; }
+  header h1 img.logo { width: 36px; height: 36px; border-radius: 8px; object-fit: cover; flex-shrink: 0; }
 
   .tabs { display: flex; gap: 6px; overflow-x: auto; }
   .tab {
@@ -98,6 +101,38 @@
   .ex-target { color: var(--muted); font-size: 13px; margin-bottom: 10px; }
   .ex-target b { color: var(--text); }
   .ex-note { font-size: 12px; color: var(--muted); margin-top: 6px; font-style: italic; }
+
+  /* Nota personal del usuario */
+  .user-note {
+    margin-top: 8px; padding: 8px 10px;
+    background: #fffbe6; border: 1px solid #f0e0a0; border-radius: 8px;
+    font-size: 13px; color: #7d6608;
+    display: flex; gap: 8px; align-items: flex-start;
+  }
+  .user-note .icon { flex-shrink: 0; font-size: 14px; }
+  .user-note .text { flex: 1; white-space: pre-wrap; word-wrap: break-word; }
+  .note-toolbar { display: flex; gap: 6px; margin-top: 8px; }
+  .note-btn {
+    background: transparent; border: 1px dashed var(--border); color: var(--muted);
+    padding: 4px 10px; border-radius: 6px; font-size: 12px; cursor: pointer;
+  }
+  .note-editor {
+    margin-top: 8px;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .note-editor textarea {
+    width: 100%; min-height: 60px; padding: 8px;
+    border: 1px solid var(--border); border-radius: 8px;
+    font-family: inherit; font-size: 13px; resize: vertical; background: white;
+  }
+  .note-editor .row { display: flex; gap: 6px; }
+  .note-editor .row button {
+    flex: 1; padding: 8px; border-radius: 6px; border: none;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+  }
+  .note-editor .save { background: var(--primary); color: white; }
+  .note-editor .cancel { background: var(--bg); color: var(--text); border: 1px solid var(--border); }
+  .note-editor .delete { background: transparent; color: var(--danger); border: 1px solid var(--border); }
 
   /* Serie inputs */
   .series-list { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
@@ -263,7 +298,10 @@
 <body>
 
 <header>
-  <h1>Mi rutina · <span id="weekday-label" style="font-weight: 400; opacity: 0.8;"></span></h1>
+  <h1>
+    <img src="logo.png" alt="" class="logo">
+    <span>Mi rutina · <span id="weekday-label" style="font-weight: 400; opacity: 0.8;"></span></span>
+  </h1>
   <div class="tabs">
     <button class="tab active" data-view="hoy">Hoy</button>
     <button class="tab" data-view="historico">Histórico</button>
@@ -427,6 +465,7 @@ let state = {
   currentDay: "Día 1",
   sessions: [],     // [{date, dia, ejercicio, serie, peso, reps, rpe, notas}]
   medidas: [],      // [{date, peso, altura, cintura, pecho, brazo, cadera, notas}]
+  notes: {},        // {nombreEjercicio: "texto libre del usuario"}
   lastWeights: {},  // {ejercicio: peso}
   repsVisible: {},  // {"dia-ejIdx": true} → mostrar columna reps en ese ejercicio
   selectedExercise: null, // ejercicio seleccionado en el histórico para la gráfica
@@ -441,6 +480,7 @@ function loadState() {
       state.sessions = parsed.sessions || [];
       state.lastWeights = parsed.lastWeights || {};
       state.medidas = parsed.medidas || [];
+      state.notes = parsed.notes || {};
     } catch(e) { console.error(e); }
   }
   // Día inicial sugerido según día de semana real (Lun→Día 1, Mar→Día 2, Mié→Día 3, Jue→Día 4, Vie→Día 5)
@@ -453,7 +493,8 @@ function saveState() {
   localStorage.setItem("rutina_app", JSON.stringify({
     sessions: state.sessions,
     lastWeights: state.lastWeights,
-    medidas: state.medidas
+    medidas: state.medidas,
+    notes: state.notes
   }));
 }
 
@@ -581,12 +622,34 @@ function renderExercises() {
     }
     html += `</div>`;
     html += `<div class="ex-note">${ej.nota}</div>`;
+    // Nota personal del usuario
+    const userNote = state.notes[ej.nombre];
+    html += `<div class="user-note-wrapper" data-ej="${idx}" data-name="${ej.nombre.replace(/"/g,'&quot;')}">`;
+    if (userNote) {
+      html += `
+        <div class="user-note">
+          <span class="icon">📝</span>
+          <span class="text">${userNote.replace(/</g,'&lt;')}</span>
+        </div>
+        <div class="note-toolbar">
+          <button class="note-btn edit-note">Editar nota</button>
+        </div>`;
+    } else {
+      html += `
+        <div class="note-toolbar">
+          <button class="note-btn edit-note">+ nota</button>
+        </div>`;
+    }
+    html += `</div>`;
 
     card.innerHTML = html;
     container.appendChild(card);
   });
 
   // Listeners
+  container.querySelectorAll(".edit-note").forEach(btn => {
+    btn.addEventListener("click", () => abrirEditorNota(btn));
+  });
   container.querySelectorAll(".check").forEach(btn => {
     btn.addEventListener("click", () => guardarSerie(btn));
   });
@@ -645,7 +708,7 @@ function aplicarATodas(btn) {
   const valReps = origenInputs[1].value;
   const valRpe  = origenInputs[2].value;
 
-  // Replicar a todas las series posteriores (que no estén ya marcadas como hechas)
+  // Replicar a todas las series posteriores Y marcarlas como guardadas
   let copiadas = 0;
   for (let s = serieOrigen + 1; s <= ej.series; s++) {
     const key = `${dia}-${ejIdx}-${s}`;
@@ -657,9 +720,48 @@ function aplicarATodas(btn) {
     if (valPeso) inputs[0].value = valPeso;
     if (valReps) inputs[1].value = valReps;
     if (valRpe)  inputs[2].value = valRpe;
+    // Marcar como hecha (guarda + check verde)
+    if (check) guardarSerie(check);
     copiadas++;
   }
-  toast(copiadas ? `Copiado a ${copiadas} serie${copiadas>1?'s':''}` : "No hay series posteriores libres");
+  toast(copiadas ? `Copiado y marcado en ${copiadas} serie${copiadas>1?'s':''}` : "No hay series posteriores libres");
+}
+
+function abrirEditorNota(btn) {
+  const wrapper = btn.closest(".user-note-wrapper");
+  const ejNombre = wrapper.dataset.name.replace(/&quot;/g, '"');
+  const current = state.notes[ejNombre] || "";
+
+  wrapper.innerHTML = `
+    <div class="note-editor">
+      <textarea placeholder="Ej: hoy en máquina X, mañana cambiar a polea, no puedo hacer este, etc.">${current.replace(/</g,'&lt;')}</textarea>
+      <div class="row">
+        <button class="cancel">Cancelar</button>
+        ${current ? '<button class="delete">Borrar</button>' : ''}
+        <button class="save">Guardar</button>
+      </div>
+    </div>
+  `;
+
+  const textarea = wrapper.querySelector("textarea");
+  textarea.focus();
+
+  wrapper.querySelector(".cancel").addEventListener("click", () => renderExercises());
+  wrapper.querySelector(".save").addEventListener("click", () => {
+    const val = textarea.value.trim();
+    if (val) state.notes[ejNombre] = val;
+    else delete state.notes[ejNombre];
+    saveState();
+    renderExercises();
+    toast("Nota guardada");
+  });
+  const delBtn = wrapper.querySelector(".delete");
+  if (delBtn) delBtn.addEventListener("click", () => {
+    delete state.notes[ejNombre];
+    saveState();
+    renderExercises();
+    toast("Nota borrada");
+  });
 }
 
 function toggleReps(btn) {
@@ -682,11 +784,6 @@ function guardarSerie(btn) {
   const reps = parseFloat(inputs[1].value) || null;
   const rpe = parseFloat(inputs[2].value) || null;
 
-  if (peso === null && reps === null) {
-    toast("Rellena peso o reps antes");
-    return;
-  }
-
   state.sessions.push({
     date: new Date().toISOString().slice(0,10),
     timestamp: Date.now(),
@@ -704,7 +801,11 @@ function guardarSerie(btn) {
 
   saveState();
   btn.classList.add("done");
-  toast(`Serie ${serie} guardada · ${peso || "-"} kg × ${reps || "-"}`);
+  if (peso || reps) {
+    toast(`Serie ${serie} · ${peso || "BW"} × ${reps || "-"}`);
+  } else {
+    toast(`Serie ${serie} marcada como hecha`);
+  }
 }
 
 function renderHistory() {
