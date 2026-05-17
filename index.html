@@ -524,7 +524,9 @@ function loadState() {
       state.sessions = parsed.sessions || [];
       state.lastWeights = parsed.lastWeights || {};
       state.medidas = parsed.medidas || [];
-      state.notes = parsed.notes || {};
+      // Las notas solo se cargan si son de la semana actual
+      const currentWeek = getCurrentWeekStartStr();
+      state.notes = (parsed.notesWeek === currentWeek) ? (parsed.notes || {}) : {};
     } catch(e) { console.error(e); }
   }
   // Día inicial sugerido según día de semana real (Lun→Día 1, Mar→Día 2, Mié→Día 3, Jue→Día 4, Vie→Día 5)
@@ -538,7 +540,8 @@ function saveState() {
     sessions: state.sessions,
     lastWeights: state.lastWeights,
     medidas: state.medidas,
-    notes: state.notes
+    notes: state.notes,
+    notesWeek: getCurrentWeekStartStr()
   }));
 }
 
