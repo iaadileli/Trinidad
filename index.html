@@ -918,7 +918,7 @@ function guardarSerie(btn) {
   const inputs = btn.parentElement.querySelectorAll("input");
   const peso = parseFloat(inputs[0].value) || null;
   const reps = parseFloat(inputs[1].value) || null;
-  const rpe = parseFloat(inputs[2].value) || null;
+  const rpe = parseFloat(inputs[2].value) || 2;
 
   state.sessions.push({
     date: new Date().toISOString().slice(0,10),
