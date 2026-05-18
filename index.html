@@ -571,6 +571,23 @@ function isDayLockedThisWeek(dia) {
   return lastDate !== new Date().toISOString().slice(0, 10);
 }
 
+function getPrevWeekStartStr() {
+  const d = new Date(getCurrentWeekStartStr() + "T12:00:00");
+  d.setDate(d.getDate() - 7);
+  return d.toISOString().slice(0, 10);
+}
+
+function getPrevWeekWeight(dia, ejercicio, serie) {
+  const prevWeekStart = getPrevWeekStartStr();
+  const found = state.sessions
+    .filter(s =>
+      s.dia === dia && s.ejercicio === ejercicio && s.serie === serie &&
+      getWeekStartStr(s.date) === prevWeekStart && s.peso != null
+    )
+    .sort((a, b) => b.date.localeCompare(a.date));
+  return found.length ? found[0].peso : null;
+}
+
 function getDayTrainedToday() {
   const today = new Date().toISOString().slice(0, 10);
   const session = state.sessions.find(s => s.date === today);
@@ -741,10 +758,12 @@ function renderExercises() {
           </div>
         `;
       } else {
+        const prevWeight = getPrevWeekWeight(dia, ej.nombre, s);
+        const pesoPH = prevWeight !== null ? prevWeight : (lastWeight || '-');
         html += `
           <div class="serie-row${withRepsClass}" data-key="${key}">
             <span class="serie-num">${s}</span>
-            <input type="number" inputmode="decimal" step="0.5" placeholder="${lastWeight || '-'}" data-field="peso" data-key="${key}">
+            <input type="number" inputmode="decimal" step="0.5" placeholder="${pesoPH}" data-field="peso" data-key="${key}">
             <input type="number" inputmode="numeric" placeholder="${ej.reps}" data-field="reps" data-key="${key}" class="reps-col">
             <input type="number" inputmode="decimal" step="0.5" placeholder="2" data-field="rpe" data-key="${key}">
             <button class="apply-all" data-ej="${idx}" data-serie="${s}" title="Copiar a las siguientes series">⤓</button>
