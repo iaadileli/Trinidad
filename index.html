@@ -486,7 +486,7 @@
     <div class="setting-card">
       <h3>Sobre la rutina</h3>
       <p>Plan v2 con compuestos 5x5 y recordatorios cruzados. 4 días pesas + cardio miércoles. Adaptada a condromalacia rotuliana derecha.</p>
-      <p style="font-size:11px;color:var(--muted);margin:8px 0 0">versión 9</p>
+      <p style="font-size:11px;color:var(--muted);margin:8px 0 0">versión 10</p>
     </div>
   </section>
 </main>
@@ -626,10 +626,13 @@ let calUi = {
   isListening: false,
   voiceMode: false,
   voiceResults: [],
+  liveTranscript: '',
+  interimText: '',
   offResults: [],
   offLoading: false,
   offSearchedFor: ''
 };
+let voiceRec = null;
 
 function loadState() {
   const saved = localStorage.getItem("rutina_app");
@@ -2061,27 +2064,59 @@ function buildCustomFoodForm(panel) {
 function startVoiceInput() {
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SR) { toast("Tu navegador no soporta voz. Prueba Chrome o Safari."); return; }
-  const rec = new SR();
-  rec.lang = 'es-ES';
-  rec.continuous = false;
-  rec.interimResults = false;
   calUi.isListening = true;
+  calUi.liveTranscript = '';
+  calUi.interimText = '';
   calUi.panelOpen = true;
   renderCalorias();
-  rec.onresult = e => {
-    calUi.isListening = false;
-    const transcript = e.results[0][0].transcript;
-    calUi.voiceResults = parseVoiceTranscript(transcript);
-    calUi.voiceMode = true;
-    renderCalorias();
-  };
-  rec.onerror = () => {
-    calUi.isListening = false;
-    toast("No te he entendido, inténtalo de nuevo");
-    renderCalorias();
-  };
-  rec.onend = () => { if (calUi.isListening) { calUi.isListening = false; renderCalorias(); } };
-  rec.start();
+
+  function createRec() {
+    if (!calUi.isListening) return;
+    const rec = new SR();
+    voiceRec = rec;
+    rec.lang = 'es-ES';
+    rec.continuous = true;
+    rec.interimResults = true;
+
+    rec.onresult = e => {
+      let finalPart = '';
+      let interim = '';
+      for (let i = e.resultIndex; i < e.results.length; i++) {
+        if (e.results[i].isFinal) finalPart += e.results[i][0].transcript + ', ';
+        else interim += e.results[i][0].transcript;
+      }
+      if (finalPart) calUi.liveTranscript += finalPart;
+      calUi.interimText = interim;
+      const panel = document.querySelector('.cal-add-panel');
+      if (panel && calUi.isListening) buildListeningIndicator(panel);
+    };
+
+    rec.onerror = e => {
+      if (e.error === 'no-speech') return;
+      calUi.isListening = false; voiceRec = null;
+      toast("Error de voz, inténtalo de nuevo");
+      renderCalorias();
+    };
+
+    // iOS/Safari para el reconocimiento sola — la reiniciamos automáticamente
+    rec.onend = () => { if (calUi.isListening) setTimeout(createRec, 150); };
+
+    try { rec.start(); } catch(err) {}
+  }
+
+  createRec();
+}
+
+function stopVoiceInput() {
+  calUi.isListening = false;
+  if (voiceRec) { try { voiceRec.stop(); } catch(e) {} voiceRec = null; }
+  const text = (calUi.liveTranscript + ' ' + calUi.interimText).trim();
+  calUi.liveTranscript = '';
+  calUi.interimText = '';
+  if (!text) { renderCalorias(); return; }
+  calUi.voiceResults = parseVoiceTranscript(text);
+  calUi.voiceMode = true;
+  renderCalorias();
 }
 
 function parseVoiceTranscript(text) {
@@ -2131,13 +2166,30 @@ function parseVoiceTranscript(text) {
 }
 
 function buildListeningIndicator(panel) {
+  const live = calUi.liveTranscript || '';
+  const interim = calUi.interimText || '';
   panel.innerHTML = `
-    <div style="text-align:center;padding:28px 0">
-      <button class="mic-btn listening" style="width:56px;height:56px;font-size:24px;margin:0 auto 14px">🎤</button>
-      <div style="font-size:16px;font-weight:700;margin-bottom:6px">Escuchando...</div>
-      <div style="font-size:13px;color:var(--muted);line-height:1.5">Di los alimentos con cantidad:<br><i>"100 gramos de arroz, 2 huevos y 300 gramos de pollo"</i></div>
+    <div style="text-align:center;padding:16px 0 10px">
+      <button class="mic-btn listening" style="width:56px;height:56px;font-size:24px;margin:0 auto 10px;display:block">🎤</button>
+      <div style="font-size:16px;font-weight:700;margin-bottom:4px">Escuchando…</div>
+      <div style="font-size:12px;color:var(--muted)">Habla todo lo que quieras, luego pulsa <b>Listo</b></div>
     </div>
+    <div style="background:var(--primary-soft);border-radius:8px;padding:10px 12px;margin-bottom:12px;font-size:13px;line-height:1.6;min-height:44px;word-break:break-word">
+      ${live ? escHtml(live) : ''}<span style="color:var(--muted)">${escHtml(interim)}</span>
+      ${!live && !interim ? '<span style="color:var(--muted);font-style:italic">Di los alimentos: "100g de arroz, 2 huevos, 300g de pollo…"</span>' : ''}
+    </div>
+    <button class="btn" id="stop-voice-btn" style="margin-bottom:8px">Listo</button>
+    <button class="btn secondary" id="cancel-voice-btn">Cancelar</button>
   `;
+  panel.querySelector('#stop-voice-btn').addEventListener('click', stopVoiceInput);
+  panel.querySelector('#cancel-voice-btn').addEventListener('click', () => {
+    calUi.isListening = false;
+    if (voiceRec) { try { voiceRec.stop(); } catch(e) {} voiceRec = null; }
+    calUi.liveTranscript = '';
+    calUi.interimText = '';
+    calUi.panelOpen = false;
+    renderCalorias();
+  });
 }
 
 function buildVoiceConfirmPanel(panel) {
@@ -2181,7 +2233,7 @@ function buildVoiceConfirmPanel(panel) {
 
   panel.querySelector("#back-voice").addEventListener("click", () => { calUi.voiceMode = false; calUi.voiceResults = []; renderCalorias(); });
   panel.querySelector("#close-voice").addEventListener("click", () => { calUi.panelOpen = false; calUi.voiceMode = false; calUi.voiceResults = []; renderCalorias(); });
-  panel.querySelector("#voice-retry").addEventListener("click", () => { calUi.voiceMode = false; calUi.voiceResults = []; startVoiceInput(); });
+  panel.querySelector("#voice-retry").addEventListener("click", () => { calUi.voiceMode = false; calUi.voiceResults = []; calUi.liveTranscript = ''; calUi.interimText = ''; startVoiceInput(); });
   panel.querySelector("#voice-confirm").addEventListener("click", () => {
     calUi.voiceResults.filter(r => r.matched).forEach(r => addFoodEntry(r.food, r.cantidad));
     calUi.panelOpen = false; calUi.voiceMode = false; calUi.voiceResults = [];
