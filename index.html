@@ -427,6 +427,25 @@
           <label>Cadera (cm) <input type="number" inputmode="decimal" step="0.5" id="m-cadera" placeholder="parte más ancha"></label>
         </div>
         <label class="full-width">Notas <input type="text" id="m-notas" placeholder="energía, sueño, etc."></label>
+        <div style="border-top:1px solid var(--border);margin:14px 0 12px;padding-top:14px">
+          <div style="font-size:12px;color:var(--muted);margin-bottom:6px">Sexo</div>
+          <div style="display:flex;gap:8px;margin-bottom:12px">
+            <button type="button" class="qty-btn" id="sexo-h-btn" style="flex:1">Hombre</button>
+            <button type="button" class="qty-btn" id="sexo-m-btn" style="flex:1">Mujer</button>
+          </div>
+          <div class="form-grid">
+            <label>Edad <input type="number" inputmode="numeric" id="m-edad" placeholder="35"></label>
+            <label>Actividad
+              <select id="m-actividad" style="margin-top:4px;padding:10px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--text);font-family:inherit;width:100%;box-sizing:border-box">
+                <option value="1.2">Sedentario — sin ejercicio</option>
+                <option value="1.375">Ligero — 1-3 días/sem</option>
+                <option value="1.55">Moderado — 3-5 días/sem</option>
+                <option value="1.725">Activo — 6-7 días/sem</option>
+                <option value="1.9">Muy activo — trabajo físico</option>
+              </select>
+            </label>
+          </div>
+        </div>
         <button type="submit" class="btn">Guardar medida</button>
       </form>
     </div>
@@ -487,7 +506,7 @@
     <div class="setting-card">
       <h3>Sobre la rutina</h3>
       <p>Plan v2 con compuestos 5x5 y recordatorios cruzados. 4 días pesas + cardio miércoles. Adaptada a condromalacia rotuliana derecha.</p>
-      <p style="font-size:11px;color:var(--muted);margin:8px 0 0">versión 11</p>
+      <p style="font-size:11px;color:var(--muted);margin:8px 0 0">versión 12</p>
     </div>
   </section>
 </main>
@@ -1257,41 +1276,12 @@ function renderObjetivoCard() {
     tdee = Math.round(bmr * actividad);
   }
 
-  const actOpts = [
-    { val: 1.2,   label: 'Sedentario — sin ejercicio' },
-    { val: 1.375, label: 'Ligero — 1-3 días/semana' },
-    { val: 1.55,  label: 'Moderado — 3-5 días/semana' },
-    { val: 1.725, label: 'Activo — 6-7 días/semana' },
-    { val: 1.9,   label: 'Muy activo — trabajo físico + ejercicio' },
-  ];
-
-  const inp = (id, val, ph, extra='') =>
-    `<input type="number" inputmode="decimal" id="${id}" value="${val !== null ? val : ''}" placeholder="${ph}"
-      style="padding:10px;border:1px solid var(--border);border-radius:8px;font-size:15px;background:var(--bg);color:var(--text);width:100%;box-sizing:border-box;${extra}">`;
+  const missing = !peso || !altura ? 'Introduce peso y altura arriba.' : !edad ? 'Introduce tu edad arriba.' : null;
 
   card.innerHTML = `
-    <h3>Objetivo calórico diario</h3>
-    <p style="font-size:13px;color:var(--muted);margin:0 0 14px">Mifflin-St Jeor · la fórmula más precisa. Peso y altura los coge de tus medidas.</p>
-
-    <div style="display:flex;gap:8px;margin-bottom:12px">
-      <button class="qty-btn${sexo === 'h' ? ' active' : ''}" data-sexo="h" style="flex:1">Hombre</button>
-      <button class="qty-btn${sexo === 'm' ? ' active' : ''}" data-sexo="m" style="flex:1">Mujer</button>
-    </div>
-
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px">
-      <label style="font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:4px">Edad ${inp('edad-input', edad, '35')}</label>
-      <label style="font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:4px">Peso (kg) ${inp('peso-input', peso, '—', 'opacity:0.7')}</label>
-      <label style="font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:4px">Altura (cm) ${inp('altura-input', altura, '—', 'opacity:0.7')}</label>
-    </div>
-
-    <label style="font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:4px;margin-bottom:14px">
-      Nivel de actividad
-      <select id="actividad-select" style="padding:10px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--text);font-family:inherit">
-        ${actOpts.map(o => `<option value="${o.val}"${actividad === o.val ? ' selected' : ''}>${o.label}</option>`).join('')}
-      </select>
-    </label>
-
-    ${bmr && tdee ? `
+    <h3>Calorías recomendadas</h3>
+    <p style="font-size:13px;color:var(--muted);margin:0 0 12px">Mifflin-St Jeor · calculado con tus medidas y datos de arriba.</p>
+    ${missing ? `<div style="font-size:13px;color:var(--muted);padding:6px 0 12px">${missing}</div>` : `
     <div style="background:var(--primary-soft);border-radius:10px;padding:14px;margin-bottom:12px">
       <div style="display:flex;justify-content:space-between;padding:4px 0;font-size:13px"><span style="color:var(--muted)">Metabolismo basal (BMR)</span><b>${bmr} kcal</b></div>
       <div style="display:flex;justify-content:space-between;padding:4px 0;font-size:13px;border-top:1px solid var(--border)"><span style="color:var(--muted)">Mantenimiento (TDEE)</span><b>${tdee} kcal</b></div>
@@ -1301,9 +1291,7 @@ function renderObjetivoCard() {
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:14px">
       <button class="btn" data-setobj="${tdee - 300}" style="font-size:13px;padding:10px">Usar ${tdee - 300} kcal<br><small style="font-weight:400;opacity:0.8">déficit suave</small></button>
       <button class="btn secondary" data-setobj="${tdee - 500}" style="font-size:13px;padding:10px">Usar ${tdee - 500} kcal<br><small style="font-weight:400;opacity:0.8">déficit moderado</small></button>
-    </div>
-    ` : `<div style="font-size:13px;color:var(--muted);text-align:center;padding:10px 0 16px">${!peso || !altura ? 'Añade peso y altura en la pestaña <b>Medidas</b>.' : 'Introduce tu edad para calcular.'}</div>`}
-
+    </div>`}
     <div style="padding-top:12px;border-top:1px solid var(--border)">
       <div style="font-size:12px;color:var(--muted);margin-bottom:6px">Objetivo actual: <b>${state.caloriaObjetivo} kcal</b> · o introduce uno manual:</div>
       <div style="display:flex;gap:8px">
@@ -1314,15 +1302,6 @@ function renderObjetivoCard() {
     </div>
   `;
 
-  card.querySelectorAll("[data-sexo]").forEach(btn => {
-    btn.addEventListener("click", () => { state.sexo = btn.dataset.sexo; saveState(); renderObjetivoCard(); });
-  });
-  card.querySelector("#edad-input").addEventListener("change", e => {
-    const v = parseInt(e.target.value); if (v > 0) { state.edad = v; saveState(); renderObjetivoCard(); }
-  });
-  card.querySelector("#actividad-select").addEventListener("change", e => {
-    state.nivelActividad = parseFloat(e.target.value); saveState(); renderObjetivoCard();
-  });
   card.querySelectorAll("[data-setobj]").forEach(btn => {
     btn.addEventListener("click", () => {
       state.caloriaObjetivo = parseInt(btn.dataset.setobj); saveState();
@@ -1520,6 +1499,10 @@ function renderProgressionChart() {
 /* ================== MEDIDAS ================== */
 function renderMedidas() {
   document.getElementById("m-fecha").value = new Date().toISOString().slice(0,10);
+  if (state.edad) document.getElementById("m-edad").value = state.edad;
+  document.getElementById("m-actividad").value = String(state.nivelActividad || 1.55);
+  document.getElementById("sexo-h-btn").classList.toggle("active", state.sexo !== "m");
+  document.getElementById("sexo-m-btn").classList.toggle("active", state.sexo === "m");
   renderMedidasGraficas();
   renderMedidasLista();
   renderObjetivoCard();
@@ -1642,6 +1625,25 @@ function renderMedidasLista() {
 
 // Listener del formulario de medidas (registrarlo después de DOMContent listo)
 document.getElementById("medida-form").addEventListener("submit", addMedida);
+
+document.getElementById("sexo-h-btn").addEventListener("click", () => {
+  state.sexo = "h"; saveState();
+  document.getElementById("sexo-h-btn").classList.add("active");
+  document.getElementById("sexo-m-btn").classList.remove("active");
+  renderObjetivoCard();
+});
+document.getElementById("sexo-m-btn").addEventListener("click", () => {
+  state.sexo = "m"; saveState();
+  document.getElementById("sexo-m-btn").classList.add("active");
+  document.getElementById("sexo-h-btn").classList.remove("active");
+  renderObjetivoCard();
+});
+document.getElementById("m-edad").addEventListener("change", e => {
+  const v = parseInt(e.target.value); if (v > 0) { state.edad = v; saveState(); renderObjetivoCard(); }
+});
+document.getElementById("m-actividad").addEventListener("change", e => {
+  state.nivelActividad = parseFloat(e.target.value); saveState(); renderObjetivoCard();
+});
 
 /* ================== CALORÍAS ================== */
 function escHtml(str) {
