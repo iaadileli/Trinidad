@@ -626,29 +626,30 @@ const ALIMENTOS_BASE = [
   { id: "pizza_porcion",   nombre: "Porción de pizza",              kcal: 285, cantidad: 1,   unidad: "porción" },
   { id: "hamburguesa",     nombre: "Hamburguesa (restaurante)",     kcal: 500, cantidad: 1,   unidad: "ud" },
   // Frutas frescas (BEDCA/USDA, por 100 g)
-  { id: "platano_g",       nombre: "Plátano",                       kcal: 89,  cantidad: 100, unidad: "g" },
-  { id: "chirimoya",       nombre: "Chirimoya",                     kcal: 73,  cantidad: 100, unidad: "g" },
-  { id: "papaya",          nombre: "Papaya",                        kcal: 43,  cantidad: 100, unidad: "g" },
-  { id: "mango",           nombre: "Mango",                         kcal: 60,  cantidad: 100, unidad: "g" },
-  { id: "pera",            nombre: "Pera",                          kcal: 57,  cantidad: 100, unidad: "g" },
-  { id: "melocoton",       nombre: "Melocotón / durazno",           kcal: 39,  cantidad: 100, unidad: "g" },
-  { id: "sandia",          nombre: "Sandía",                        kcal: 30,  cantidad: 100, unidad: "g" },
-  { id: "melon",           nombre: "Melón",                         kcal: 34,  cantidad: 100, unidad: "g" },
-  { id: "kiwi",            nombre: "Kiwi",                          kcal: 58,  cantidad: 100, unidad: "g" },
-  { id: "uvas",            nombre: "Uvas",                          kcal: 69,  cantidad: 100, unidad: "g" },
+  // pesoUd = peso típico por unidad en gramos (para voz sin especificar gramos)
+  { id: "platano_g",       nombre: "Plátano",                       kcal: 89,  cantidad: 100, unidad: "g", pesoUd: 120  },
+  { id: "chirimoya",       nombre: "Chirimoya",                     kcal: 73,  cantidad: 100, unidad: "g", pesoUd: 300  },
+  { id: "papaya",          nombre: "Papaya",                        kcal: 43,  cantidad: 100, unidad: "g", pesoUd: 400  },
+  { id: "mango",           nombre: "Mango",                         kcal: 60,  cantidad: 100, unidad: "g", pesoUd: 330  },
+  { id: "pera",            nombre: "Pera",                          kcal: 57,  cantidad: 100, unidad: "g", pesoUd: 165  },
+  { id: "melocoton",       nombre: "Melocotón / durazno",           kcal: 39,  cantidad: 100, unidad: "g", pesoUd: 140  },
+  { id: "sandia",          nombre: "Sandía",                        kcal: 30,  cantidad: 100, unidad: "g", pesoUd: 300  },
+  { id: "melon",           nombre: "Melón",                         kcal: 34,  cantidad: 100, unidad: "g", pesoUd: 250  },
+  { id: "kiwi",            nombre: "Kiwi",                          kcal: 58,  cantidad: 100, unidad: "g", pesoUd: 85   },
+  { id: "uvas",            nombre: "Uvas",                          kcal: 69,  cantidad: 100, unidad: "g", pesoUd: 80   },
   { id: "cereza",          nombre: "Cerezas",                       kcal: 63,  cantidad: 100, unidad: "g" },
-  { id: "pina",            nombre: "Piña",                          kcal: 50,  cantidad: 100, unidad: "g" },
-  { id: "granada",         nombre: "Granada",                       kcal: 68,  cantidad: 100, unidad: "g" },
-  { id: "arandanos",       nombre: "Arándanos",                     kcal: 57,  cantidad: 100, unidad: "g" },
-  { id: "frambuesas",      nombre: "Frambuesas",                    kcal: 52,  cantidad: 100, unidad: "g" },
-  { id: "mandarina",       nombre: "Mandarina / clementina",        kcal: 47,  cantidad: 100, unidad: "g" },
-  { id: "pomelo",          nombre: "Pomelo",                        kcal: 38,  cantidad: 100, unidad: "g" },
-  { id: "ciruela",         nombre: "Ciruela",                       kcal: 46,  cantidad: 100, unidad: "g" },
-  { id: "higo",            nombre: "Higos",                         kcal: 74,  cantidad: 100, unidad: "g" },
-  { id: "manzana_g",       nombre: "Manzana",                       kcal: 52,  cantidad: 100, unidad: "g" },
-  { id: "naranja_g",       nombre: "Naranja",                       kcal: 47,  cantidad: 100, unidad: "g" },
-  { id: "fresa_g",         nombre: "Fresas / fresones",             kcal: 32,  cantidad: 100, unidad: "g" },
-  { id: "limon",           nombre: "Limón",                         kcal: 29,  cantidad: 100, unidad: "g" },
+  { id: "pina",            nombre: "Piña",                          kcal: 50,  cantidad: 100, unidad: "g", pesoUd: 250  },
+  { id: "granada",         nombre: "Granada",                       kcal: 68,  cantidad: 100, unidad: "g", pesoUd: 280  },
+  { id: "arandanos",       nombre: "Arándanos",                     kcal: 57,  cantidad: 100, unidad: "g", pesoUd: 100  },
+  { id: "frambuesas",      nombre: "Frambuesas",                    kcal: 52,  cantidad: 100, unidad: "g", pesoUd: 100  },
+  { id: "mandarina",       nombre: "Mandarina / clementina",        kcal: 47,  cantidad: 100, unidad: "g", pesoUd: 75   },
+  { id: "pomelo",          nombre: "Pomelo",                        kcal: 38,  cantidad: 100, unidad: "g", pesoUd: 230  },
+  { id: "ciruela",         nombre: "Ciruela",                       kcal: 46,  cantidad: 100, unidad: "g", pesoUd: 55   },
+  { id: "higo",            nombre: "Higos",                         kcal: 74,  cantidad: 100, unidad: "g", pesoUd: 50   },
+  { id: "manzana_g",       nombre: "Manzana",                       kcal: 52,  cantidad: 100, unidad: "g", pesoUd: 160  },
+  { id: "naranja_g",       nombre: "Naranja",                       kcal: 47,  cantidad: 100, unidad: "g", pesoUd: 140  },
+  { id: "fresa_g",         nombre: "Fresas / fresones",             kcal: 32,  cantidad: 100, unidad: "g", pesoUd: 12   },
+  { id: "limon",           nombre: "Limón",                         kcal: 29,  cantidad: 100, unidad: "g", pesoUd: 85   },
   // Verduras y hortalizas (BEDCA, por 100 g)
   { id: "zanahoria",       nombre: "Zanahoria",                     kcal: 41,  cantidad: 100, unidad: "g" },
   { id: "pepino",          nombre: "Pepino",                        kcal: 16,  cantidad: 100, unidad: "g" },
@@ -2973,10 +2974,10 @@ function parseVoiceTranscript(text) {
     const food = bestScore >= 25 ? bestFood : null;
     let totalKcal = 0;
     // cantidadReal: lo que se pasará a addFoodEntry (en la unidad del alimento)
-    // Si el usuario dice "4 papayas" sin unidad → tratamos como 4×100g = 400g
+    // Si el usuario dice "4 papayas" sin unidad → tratamos como 4×pesoUd g (ej. 4×400g=1600g)
     // Si dice "100 gramos de papaya" con unidad → 100g tal cual
     const isSmallCount = food && !hasUnit && cantidad <= 15 && food.unidad === 'g';
-    const cantidadReal = isSmallCount ? cantidad * food.cantidad : cantidad;
+    const cantidadReal = isSmallCount ? cantidad * (food.pesoUd || food.cantidad) : cantidad;
     if (food) {
       totalKcal = Math.round((food.kcal / food.cantidad) * cantidadReal);
     }
