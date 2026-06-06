@@ -515,7 +515,7 @@
     <div class="setting-card">
       <h3>Sobre la rutina</h3>
       <p>Plan v2 con compuestos 5x5 y recordatorios cruzados. 4 días pesas + cardio miércoles. Adaptada a condromalacia rotuliana derecha.</p>
-      <p style="font-size:11px;color:var(--muted);margin:8px 0 0">versión 18</p>
+      <p style="font-size:11px;color:var(--muted);margin:8px 0 0">versión 19</p>
     </div>
   </section>
 </main>
@@ -808,6 +808,14 @@ const ALIMENTOS_BASE = [
   { id: "chocolate_leche", nombre: "Chocolate con leche",           kcal: 535, cantidad: 100, unidad: "g" },
   { id: "chocolate_negro", nombre: "Chocolate negro 70%",           kcal: 598, cantidad: 100, unidad: "g" },
   { id: "queso_manchego",  nombre: "Queso manchego",                kcal: 383, cantidad: 100, unidad: "g" },
+  // Pastas adicionales y platos comunes (para voz)
+  { id: "espaguetis",    nombre: "Espaguetis cocidos",               kcal: 157, cantidad: 100, unidad: "g" },
+  { id: "macarrones",    nombre: "Macarrones cocidos",               kcal: 131, cantidad: 100, unidad: "g" },
+  { id: "carbonara",     nombre: "Espaguetis carbonara",             kcal: 370, cantidad: 100, unidad: "g" },
+  { id: "bolonesa",      nombre: "Pasta a la boloñesa",              kcal: 130, cantidad: 100, unidad: "g" },
+  { id: "pollo_asado",   nombre: "Pollo asado",                      kcal: 195, cantidad: 100, unidad: "g" },
+  { id: "salmorejo_c",   nombre: "Salmorejo",                        kcal: 120, cantidad: 100, unidad: "g" },
+  { id: "fideos_c",      nombre: "Fideos cocidos",                   kcal: 131, cantidad: 100, unidad: "g" },
 ];
 
 /* ================== ESTADO ================== */
@@ -2398,38 +2406,90 @@ async function stopVoiceInput() {
 
 function parseVoiceTranscript(text) {
   text = text.toLowerCase()
-    // errores frecuentes del reconocedor de voz en español
+    // Errores frecuentes del reconocedor en español
     .replace(/\bdiagramo[s]?\b/g, 'gramos')
     .replace(/\bdiagrama[s]?\b/g, 'gramos')
     .replace(/\bgramo[s]?\b/g, 'gramos')
     .replace(/\bgranos?\b/g, 'gramos')
-    .replace(/\bgrs?\b/g, 'gramos')
+    .replace(/\bgr\b/g, 'gramos')
     .replace(/\bkilogramo[s]?\b/g, 'kg')
     .replace(/\bkilos?\b/g, 'kg')
     .replace(/\bmililitro[s]?\b/g, 'ml')
     .replace(/\blitros?\b/g, '1000 ml')
-    // números en palabras
+    // Números cardinales completos (orden: compuestos primero)
+    .replace(/\bdoscientas?\b/g, '200').replace(/\btrescientas?\b/g, '300')
+    .replace(/\bcuatrocientas?\b/g, '400').replace(/\bquinientas?\b/g, '500')
+    .replace(/\bseiscientas?\b/g, '600').replace(/\bsetecientas?\b/g, '700')
+    .replace(/\bochocientas?\b/g, '800').replace(/\bnovecientas?\b/g, '900')
+    .replace(/\bciento\b/g, '100').replace(/\bcien\b/g, '100')
+    .replace(/\bveintinueve\b/g, '29').replace(/\bveintiocho\b/g, '28')
+    .replace(/\bveintisiete\b/g, '27').replace(/\bveintiséis\b/g, '26')
+    .replace(/\bveinticinco\b/g, '25').replace(/\bveinticuatro\b/g, '24')
+    .replace(/\bveintitrés\b/g, '23').replace(/\bveintidós\b/g, '22')
+    .replace(/\bveintiuno\b/g, '21').replace(/\bveinte\b/g, '20')
+    .replace(/\bdiecinueve\b/g, '19').replace(/\bdieciocho\b/g, '18')
+    .replace(/\bdiecisiete\b/g, '17').replace(/\bdieciséis\b/g, '16')
+    .replace(/\bquince\b/g, '15').replace(/\bcatorce\b/g, '14')
+    .replace(/\btrece\b/g, '13').replace(/\bdoce\b/g, '12')
+    .replace(/\bonce\b/g, '11').replace(/\bdiez\b/g, '10')
+    .replace(/\bnueve\b/g, '9').replace(/\bocho\b/g, '8')
+    .replace(/\bsiete\b/g, '7').replace(/\bseis\b/g, '6')
+    .replace(/\bcinco\b/g, '5').replace(/\bcuatro\b/g, '4')
+    .replace(/\btres\b/g, '3').replace(/\bdos\b/g, '2')
     .replace(/\bun(o|a)?\b/g, '1')
-    .replace(/\bdos\b/g, '2').replace(/\btres\b/g, '3')
-    .replace(/\bcuatro\b/g, '4').replace(/\bcinco\b/g, '5')
-    .replace(/\bseis\b/g, '6').replace(/\bsiete\b/g, '7')
-    .replace(/\bocho\b/g, '8').replace(/\bnueve\b/g, '9')
-    .replace(/\bdiez\b/g, '10').replace(/\bonce\b/g, '11')
-    .replace(/\bdoce\b/g, '12').replace(/\bveinte\b/g, '20')
-    .replace(/\bcien\b/g, '100').replace(/\bdoscientos\b/g, '200')
-    .replace(/\btrescientos\b/g, '300').replace(/\bcuatrocientos\b/g, '400')
-    .replace(/\bquinientos\b/g, '500')
-    // "medio/media" → 0.5
-    .replace(/\bmedio[s]?\b/g, '0.5').replace(/\bmedia[s]?\b/g, '0.5');
+    .replace(/\bnoventa\b/g, '90').replace(/\bochenta\b/g, '80')
+    .replace(/\bsetenta\b/g, '70').replace(/\bsesenta\b/g, '60')
+    .replace(/\bcincuenta\b/g, '50').replace(/\bcuarenta\b/g, '40')
+    .replace(/\btreinta\b/g, '30')
+    .replace(/\bmedio[s]?\b/g, '0.5').replace(/\bmedia[s]?\b/g, '0.5')
+    // Alias fonéticos para alimentos comunes
+    .replace(/\bspaguetis?\b/g, 'espaguetis')
+    .replace(/\bspaghettis?\b/g, 'espaguetis')
+    .replace(/\bfideos?\b/g, 'fideos')
+    .replace(/\bmacarrones?\b/g, 'macarrones')
+    .replace(/\bpechugas?\b/g, 'pechuga')
+    .replace(/\bplatanos?\b/g, 'plátano')
+    .replace(/\bchirimoyas?\b/g, 'chirimoya')
+    .replace(/\bpapayas?\b/g, 'papaya')
+    .replace(/\bguacamole\b/g, 'aguacate');
 
-  const segments = text.split(/[,;]|\s+y\s+|\s+e\s+/).map(s => s.trim()).filter(Boolean);
+  // Dividir por delimitadores explícitos
+  const rawSegs = text.split(/[,;]|\s+y\s+|\s+e\s+/);
 
-  return segments.map(seg => {
+  // Para cada segmento, detectar si el reconocedor metió varios alimentos seguidos
+  // p.ej. "100 gramos de arroz 200 de pasta" → ["100 gramos de arroz","200 de pasta"]
+  const connectors = new Set(['de','a','con','en','al','el','la','los','las','del','más','cada','por','hasta','unos','unas']);
+  const segments = [];
+  rawSegs.forEach(raw => {
+    const seg = raw.trim();
+    if (!seg) return;
+    const tokens = seg.split(/\s+/);
+    let current = [];
+    let foundFirstNum = false;
+    tokens.forEach((tok, i) => {
+      const isNum = /^\d+(?:[.,]\d+)?$/.test(tok);
+      const prevTok = (tokens[i - 1] || '').toLowerCase();
+      if (isNum && foundFirstNum && !connectors.has(prevTok)) {
+        // Nuevo alimento: guardar el bloque actual e iniciar uno nuevo
+        if (current.length) segments.push(current.join(' '));
+        current = [tok];
+      } else {
+        current.push(tok);
+        if (isNum) foundFirstNum = true;
+      }
+    });
+    if (current.length) segments.push(current.join(' '));
+  });
+
+  const UNITS_RE = /^(gramos?|g|kilos?|kg|ml|unidades?|ud\.?|latas?|vasos?|porciones?|puñados?|cdas?|rebanadas?|copas?|dosis)$/;
+
+  return segments.filter(Boolean).map(seg => {
     const m = seg.match(/^(\d+(?:[.,]\d+)?)\s*(gramos?|g\b|kilos?|kg|ml|unidades?|ud\.?|latas?|vasos?|porciones?|puñados?|cdas?|rebanadas?|copas?|dosis)?\s*(?:de\s+)?(.+)$/);
-    let cantidad = 1, foodQuery = seg;
+    let cantidad = 1, foodQuery = seg, hasUnit = false;
     if (m) {
       cantidad = parseFloat(m[1].replace(',', '.'));
       const u = (m[2] || '').toLowerCase();
+      hasUnit = !!m[2];
       if (u.startsWith('k')) cantidad *= 1000;
       foodQuery = m[3].trim();
     }
@@ -2449,11 +2509,19 @@ function parseVoiceTranscript(text) {
     });
 
     const food = bestScore >= 25 ? bestFood : null;
-    return {
-      raw: seg, foodQuery, cantidad,
-      food, matched: !!food,
-      totalKcal: food ? Math.round((food.kcal / food.cantidad) * cantidad) : 0
-    };
+    let totalKcal = 0;
+    if (food) {
+      // Si no se especificó unidad y la cantidad es pequeña (≤15),
+      // tratar como "N raciones base" en vez de N gramos.
+      // Ej: "una pechuga" → 1 × 165 kcal (no 1g × 1.65 kcal/g)
+      if (!hasUnit && cantidad <= 15 && food.unidad === 'g') {
+        totalKcal = Math.round(food.kcal * cantidad);
+      } else {
+        totalKcal = Math.round((food.kcal / food.cantidad) * cantidad);
+      }
+    }
+
+    return { raw: seg, foodQuery, cantidad, food, matched: !!food, totalKcal };
   });
 }
 
