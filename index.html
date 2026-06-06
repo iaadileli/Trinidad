@@ -440,6 +440,8 @@
       <h3>Histórico de medidas</h3>
       <div id="medidas-lista"></div>
     </div>
+
+    <div class="setting-card" id="objetivo-card"></div>
   </section>
 
   <!-- VISTA CALORÍAS -->
@@ -477,7 +479,6 @@
       <p>Borra todo el histórico de sesiones. Esta acción no se puede deshacer.</p>
       <button class="btn danger" onclick="resetData()">Borrar todos los datos</button>
     </div>
-    <div class="setting-card" id="objetivo-card"></div>
     <div class="setting-card" id="mis-alimentos-card">
       <h3>Mis alimentos</h3>
       <p>Alimentos personalizados que has guardado.</p>
@@ -486,7 +487,7 @@
     <div class="setting-card">
       <h3>Sobre la rutina</h3>
       <p>Plan v2 con compuestos 5x5 y recordatorios cruzados. 4 días pesas + cardio miércoles. Adaptada a condromalacia rotuliana derecha.</p>
-      <p style="font-size:11px;color:var(--muted);margin:8px 0 0">versión 10</p>
+      <p style="font-size:11px;color:var(--muted);margin:8px 0 0">versión 11</p>
     </div>
   </section>
 </main>
@@ -1335,7 +1336,6 @@ function renderObjetivoCard() {
 }
 
 function renderSettings() {
-  renderObjetivoCard();
   const misAlimentosList = document.getElementById("mis-alimentos-list");
   if (misAlimentosList) {
     if (state.foods.length === 0) {
@@ -1519,11 +1519,10 @@ function renderProgressionChart() {
 
 /* ================== MEDIDAS ================== */
 function renderMedidas() {
-  // Set fecha por defecto
   document.getElementById("m-fecha").value = new Date().toISOString().slice(0,10);
-
   renderMedidasGraficas();
   renderMedidasLista();
+  renderObjetivoCard();
 }
 
 function addMedida(e) {
