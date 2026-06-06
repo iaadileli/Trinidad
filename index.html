@@ -515,7 +515,7 @@
     <div class="setting-card">
       <h3>Sobre la rutina</h3>
       <p>Plan v2 con compuestos 5x5 y recordatorios cruzados. 4 días pesas + cardio miércoles. Adaptada a condromalacia rotuliana derecha.</p>
-      <p style="font-size:11px;color:var(--muted);margin:8px 0 0">versión 22</p>
+      <p style="font-size:11px;color:var(--muted);margin:8px 0 0">versión 23</p>
     </div>
   </section>
 </main>
@@ -2856,7 +2856,7 @@ async function stopVoiceInput() {
   }
 
   const total = matched.reduce((s, r) => s + r.totalKcal, 0);
-  matched.forEach(r => addFoodEntry(r.food, r.cantidad));
+  matched.forEach(r => addFoodEntry(r.food, r.cantidadReal ?? r.cantidad));
   calUi.panelOpen = false;
   calUi.voiceMode = false;
   calUi.voiceResults = [];
@@ -2972,18 +2972,16 @@ function parseVoiceTranscript(text) {
 
     const food = bestScore >= 25 ? bestFood : null;
     let totalKcal = 0;
+    // cantidadReal: lo que se pasará a addFoodEntry (en la unidad del alimento)
+    // Si el usuario dice "4 papayas" sin unidad → tratamos como 4×100g = 400g
+    // Si dice "100 gramos de papaya" con unidad → 100g tal cual
+    const isSmallCount = food && !hasUnit && cantidad <= 15 && food.unidad === 'g';
+    const cantidadReal = isSmallCount ? cantidad * food.cantidad : cantidad;
     if (food) {
-      // Si no se especificó unidad y la cantidad es pequeña (≤15),
-      // tratar como "N raciones base" en vez de N gramos.
-      // Ej: "una pechuga" → 1 × 165 kcal (no 1g × 1.65 kcal/g)
-      if (!hasUnit && cantidad <= 15 && food.unidad === 'g') {
-        totalKcal = Math.round(food.kcal * cantidad);
-      } else {
-        totalKcal = Math.round((food.kcal / food.cantidad) * cantidad);
-      }
+      totalKcal = Math.round((food.kcal / food.cantidad) * cantidadReal);
     }
 
-    return { raw: seg, foodQuery, cantidad, food, matched: !!food, totalKcal };
+    return { raw: seg, foodQuery, cantidad, cantidadReal, food, matched: !!food, totalKcal };
   });
 }
 
@@ -3057,7 +3055,7 @@ function buildVoiceConfirmPanel(panel) {
   panel.querySelector("#close-voice").addEventListener("click", () => { calUi.panelOpen = false; calUi.voiceMode = false; calUi.voiceResults = []; renderCalorias(); });
   panel.querySelector("#voice-retry").addEventListener("click", () => { calUi.voiceMode = false; calUi.voiceResults = []; calUi.liveTranscript = ''; calUi.interimText = ''; startVoiceInput(); });
   panel.querySelector("#voice-confirm").addEventListener("click", () => {
-    calUi.voiceResults.filter(r => r.matched).forEach(r => addFoodEntry(r.food, r.cantidad));
+    calUi.voiceResults.filter(r => r.matched).forEach(r => addFoodEntry(r.food, r.cantidadReal ?? r.cantidad));
     calUi.panelOpen = false; calUi.voiceMode = false; calUi.voiceResults = [];
     renderCalorias();
     toast(`${matched.length} alimento${matched.length !== 1 ? 's' : ''} añadido${matched.length !== 1 ? 's' : ''} · ${total} kcal`);
