@@ -515,7 +515,7 @@
     <div class="setting-card">
       <h3>Sobre la rutina</h3>
       <p>Plan v2 con compuestos 5x5 y recordatorios cruzados. 4 días pesas + cardio miércoles. Adaptada a condromalacia rotuliana derecha.</p>
-      <p style="font-size:11px;color:var(--muted);margin:8px 0 0">versión 20</p>
+      <p style="font-size:11px;color:var(--muted);margin:8px 0 0">versión 21</p>
     </div>
   </section>
 </main>
@@ -882,6 +882,192 @@ const ALIMENTOS_BASE = [
   { id: "judias_coc",       nombre: "Judías verdes cocidas",           kcal: 28,  cantidad: 100, unidad: "g" },
   { id: "coliflor_coc",     nombre: "Coliflor cocida",                 kcal: 23,  cantidad: 100, unidad: "g" },
   { id: "espinacas_coc",    nombre: "Espinacas cocidas",               kcal: 23,  cantidad: 100, unidad: "g" },
+
+  // ===== PESCADOS BLANCOS (adicionales) =====
+  { id: "corvina",          nombre: "Corvina",                         kcal: 96,  cantidad: 100, unidad: "g" },
+  { id: "rodaballo",        nombre: "Rodaballo",                       kcal: 91,  cantidad: 100, unidad: "g" },
+  { id: "fletán",           nombre: "Fletán / halibut",                kcal: 116, cantidad: 100, unidad: "g" },
+  { id: "mero",             nombre: "Mero",                            kcal: 110, cantidad: 100, unidad: "g" },
+  { id: "gallo",            nombre: "Gallo (pescado)",                 kcal: 82,  cantidad: 100, unidad: "g" },
+  { id: "cherne",           nombre: "Cherne",                          kcal: 103, cantidad: 100, unidad: "g" },
+  { id: "cazón",            nombre: "Cazón",                           kcal: 111, cantidad: 100, unidad: "g" },
+  { id: "anguila",          nombre: "Anguila",                         kcal: 236, cantidad: 100, unidad: "g" },
+  { id: "bacalao_horno",    nombre: "Bacalao al horno",                kcal: 90,  cantidad: 100, unidad: "g" },
+  { id: "merluza_rebozada", nombre: "Merluza rebozada / frita",        kcal: 195, cantidad: 100, unidad: "g" },
+
+  // ===== MARISCOS Y CRUSTÁCEOS (completo) =====
+  { id: "gambones",         nombre: "Gambones",                        kcal: 85,  cantidad: 100, unidad: "g" },
+  { id: "langostinos",      nombre: "Langostinos",                     kcal: 95,  cantidad: 100, unidad: "g" },
+  { id: "langosta",         nombre: "Langosta",                        kcal: 90,  cantidad: 100, unidad: "g" },
+  { id: "bogavante",        nombre: "Bogavante",                       kcal: 77,  cantidad: 100, unidad: "g" },
+  { id: "centollo",         nombre: "Centollo",                        kcal: 89,  cantidad: 100, unidad: "g" },
+  { id: "necora",           nombre: "Nécora",                          kcal: 87,  cantidad: 100, unidad: "g" },
+  { id: "galeras",          nombre: "Galeras",                         kcal: 82,  cantidad: 100, unidad: "g" },
+  { id: "percebes",         nombre: "Percebes",                        kcal: 47,  cantidad: 100, unidad: "g" },
+  { id: "cangrejo_rio",     nombre: "Cangrejos de río",                kcal: 82,  cantidad: 100, unidad: "g" },
+  { id: "gambas_ajillo",    nombre: "Gambas al ajillo",                kcal: 150, cantidad: 100, unidad: "g" },
+  { id: "gambas_plancha2",  nombre: "Gambones a la plancha",           kcal: 112, cantidad: 100, unidad: "g" },
+
+  // ===== MOLUSCOS (completo) =====
+  { id: "vieiras",          nombre: "Vieiras",                         kcal: 69,  cantidad: 100, unidad: "g" },
+  { id: "zamburinas",       nombre: "Zamburiñas",                      kcal: 69,  cantidad: 100, unidad: "g" },
+  { id: "navajas",          nombre: "Navajas",                         kcal: 82,  cantidad: 100, unidad: "g" },
+  { id: "coquinas",         nombre: "Coquinas / chirlas",              kcal: 74,  cantidad: 100, unidad: "g" },
+  { id: "sepia",            nombre: "Sepia",                           kcal: 79,  cantidad: 100, unidad: "g" },
+  { id: "chipirón",         nombre: "Chipirones",                      kcal: 79,  cantidad: 100, unidad: "g" },
+  { id: "sepia_plancha",    nombre: "Sepia a la plancha",              kcal: 86,  cantidad: 100, unidad: "g" },
+  { id: "calamar_plancha",  nombre: "Calamar a la plancha",            kcal: 100, cantidad: 100, unidad: "g" },
+  { id: "calamar_frito",    nombre: "Calamares fritos / rabas",        kcal: 230, cantidad: 100, unidad: "g" },
+  { id: "pulpo_gallega",    nombre: "Pulpo a la gallega",              kcal: 100, cantidad: 100, unidad: "g" },
+  { id: "mejillones_vapor", nombre: "Mejillones al vapor",             kcal: 86,  cantidad: 100, unidad: "g" },
+
+  // ===== CARNES DE CAZA Y AVES (adicionales) =====
+  { id: "pato_crudo",       nombre: "Pato crudo",                      kcal: 201, cantidad: 100, unidad: "g" },
+  { id: "jabali",           nombre: "Jabalí",                          kcal: 122, cantidad: 100, unidad: "g" },
+  { id: "venado",           nombre: "Venado / ciervo",                 kcal: 120, cantidad: 100, unidad: "g" },
+  { id: "codorniz",         nombre: "Codorniz",                        kcal: 192, cantidad: 100, unidad: "g" },
+  { id: "perdiz",           nombre: "Perdiz",                          kcal: 140, cantidad: 100, unidad: "g" },
+  { id: "conejo_crudo2",    nombre: "Conejo crudo",                    kcal: 114, cantidad: 100, unidad: "g" },
+  { id: "conejo_guiso",     nombre: "Conejo en salsa / guisado",       kcal: 150, cantidad: 100, unidad: "g" },
+  { id: "ternera_guiso",    nombre: "Ternera guisada / estofada",      kcal: 200, cantidad: 100, unidad: "g" },
+  { id: "cerdo_asado",      nombre: "Cerdo asado",                     kcal: 185, cantidad: 100, unidad: "g" },
+  { id: "costillas_coc",    nombre: "Costillas de cerdo asadas",       kcal: 280, cantidad: 100, unidad: "g" },
+
+  // ===== EMBUTIDOS Y CHARCUTERÍA (adicionales) =====
+  { id: "jamon_iberico",    nombre: "Jamón ibérico",                   kcal: 375, cantidad: 100, unidad: "g" },
+  { id: "sobrasada",        nombre: "Sobrasada",                       kcal: 488, cantidad: 100, unidad: "g" },
+  { id: "butifarra",        nombre: "Butifarra",                       kcal: 320, cantidad: 100, unidad: "g" },
+  { id: "salchichon",       nombre: "Salchichón",                      kcal: 395, cantidad: 100, unidad: "g" },
+  { id: "longaniza",        nombre: "Longaniza",                       kcal: 325, cantidad: 100, unidad: "g" },
+  { id: "chorizo_fresco",   nombre: "Chorizo fresco crudo",            kcal: 280, cantidad: 100, unidad: "g" },
+  { id: "morcón",           nombre: "Morcón",                          kcal: 350, cantidad: 100, unidad: "g" },
+  { id: "bacon",            nombre: "Bacon / panceta",                 kcal: 458, cantidad: 100, unidad: "g" },
+  { id: "pavo_ahumado",     nombre: "Pavo ahumado / fiambre",          kcal: 104, cantidad: 100, unidad: "g" },
+
+  // ===== PASTA (todas las variedades) =====
+  { id: "tallarines_coc",   nombre: "Tallarines cocidos",              kcal: 131, cantidad: 100, unidad: "g" },
+  { id: "penne_coc",        nombre: "Penne / rigatoni cocidos",        kcal: 131, cantidad: 100, unidad: "g" },
+  { id: "fusilli_coc",      nombre: "Fusilli / tirabuzones cocidos",   kcal: 131, cantidad: 100, unidad: "g" },
+  { id: "lasaña_coc",       nombre: "Láminas de lasaña cocidas",       kcal: 131, cantidad: 100, unidad: "g" },
+  { id: "noodles_coc",      nombre: "Noodles / fideos asiáticos coc.", kcal: 138, cantidad: 100, unidad: "g" },
+  { id: "pasta_cruda2",     nombre: "Pasta seca (cualquier tipo)",     kcal: 350, cantidad: 100, unidad: "g" },
+
+  // ===== ARROZ (variedades) =====
+  { id: "arroz_basmati_c",  nombre: "Arroz basmati cocido",            kcal: 121, cantidad: 100, unidad: "g" },
+  { id: "arroz_basmati_r",  nombre: "Arroz basmati crudo",             kcal: 355, cantidad: 100, unidad: "g" },
+  { id: "arroz_bomba_c",    nombre: "Arroz bomba cocido",              kcal: 130, cantidad: 100, unidad: "g" },
+  { id: "arroz_negro",      nombre: "Arroz negro (con tinta)",         kcal: 175, cantidad: 100, unidad: "g" },
+  { id: "arroz_3delicias",  nombre: "Arroz tres delicias",             kcal: 180, cantidad: 100, unidad: "g" },
+
+  // ===== LEGUMBRES (adicionales) =====
+  { id: "alubias_rojas",    nombre: "Alubias rojas cocidas",           kcal: 127, cantidad: 100, unidad: "g" },
+  { id: "alubias_blancas",  nombre: "Alubias blancas cocidas",         kcal: 127, cantidad: 100, unidad: "g" },
+  { id: "azukis",           nombre: "Azukis cocidos",                  kcal: 128, cantidad: 100, unidad: "g" },
+  { id: "altramuces",       nombre: "Altramuces",                      kcal: 371, cantidad: 100, unidad: "g" },
+
+  // ===== PAN Y CEREALES (adicionales) =====
+  { id: "pan_blanco_100g",  nombre: "Pan blanco",                      kcal: 265, cantidad: 100, unidad: "g" },
+  { id: "pan_integral_100", nombre: "Pan integral",                    kcal: 235, cantidad: 100, unidad: "g" },
+  { id: "pan_pita",         nombre: "Pan de pita",                     kcal: 270, cantidad: 100, unidad: "g" },
+  { id: "wrap_trigo",       nombre: "Wrap / tortilla de trigo",        kcal: 300, cantidad: 100, unidad: "g" },
+  { id: "baguette",         nombre: "Baguette / chapata",              kcal: 265, cantidad: 100, unidad: "g" },
+  { id: "polenta_coc",      nombre: "Polenta cocida",                  kcal: 70,  cantidad: 100, unidad: "g" },
+  { id: "palomitas",        nombre: "Palomitas de maíz",               kcal: 375, cantidad: 100, unidad: "g" },
+  { id: "copos_maiz",       nombre: "Copos de maíz / corn flakes",     kcal: 378, cantidad: 100, unidad: "g" },
+  { id: "muesli",           nombre: "Muesli sin azúcar",               kcal: 350, cantidad: 100, unidad: "g" },
+
+  // ===== LÁCTEOS (adicionales) =====
+  { id: "queso_cabra",      nombre: "Queso de cabra",                  kcal: 364, cantidad: 100, unidad: "g" },
+  { id: "queso_feta",       nombre: "Queso feta",                      kcal: 264, cantidad: 100, unidad: "g" },
+  { id: "queso_mozzarella", nombre: "Queso mozzarella",                kcal: 280, cantidad: 100, unidad: "g" },
+  { id: "queso_cheddar",    nombre: "Queso cheddar",                   kcal: 403, cantidad: 100, unidad: "g" },
+  { id: "queso_cottage",    nombre: "Queso cottage",                   kcal: 98,  cantidad: 100, unidad: "g" },
+  { id: "skyr",             nombre: "Skyr / yogur islandés",           kcal: 65,  cantidad: 100, unidad: "g" },
+  { id: "yogur_0",          nombre: "Yogur desnatado 0%",              kcal: 55,  cantidad: 100, unidad: "g" },
+  { id: "natillas",         nombre: "Natillas",                        kcal: 110, cantidad: 100, unidad: "g" },
+  { id: "flan",             nombre: "Flan",                            kcal: 100, cantidad: 100, unidad: "g" },
+  { id: "helado_vainilla",  nombre: "Helado de vainilla",              kcal: 207, cantidad: 100, unidad: "g" },
+  { id: "queso_rulo",       nombre: "Rulo de queso de cabra",          kcal: 320, cantidad: 100, unidad: "g" },
+
+  // ===== VERDURAS Y HORTALIZAS (adicionales) =====
+  { id: "ajo",              nombre: "Ajo",                             kcal: 149, cantidad: 100, unidad: "g" },
+  { id: "cebolleta",        nombre: "Cebolleta",                       kcal: 32,  cantidad: 100, unidad: "g" },
+  { id: "cebolla_morada",   nombre: "Cebolla morada",                  kcal: 40,  cantidad: 100, unidad: "g" },
+  { id: "jengibre",         nombre: "Jengibre fresco",                 kcal: 80,  cantidad: 100, unidad: "g" },
+  { id: "coliflor_cruda",   nombre: "Coliflor cruda",                  kcal: 25,  cantidad: 100, unidad: "g" },
+  { id: "brocoli_vapor",    nombre: "Brócoli al vapor",                kcal: 35,  cantidad: 100, unidad: "g" },
+  { id: "berenjena_horno",  nombre: "Berenjena al horno",              kcal: 35,  cantidad: 100, unidad: "g" },
+  { id: "puerro_cocido",    nombre: "Puerro cocido",                   kcal: 29,  cantidad: 100, unidad: "g" },
+  { id: "nabo_cocido",      nombre: "Nabo cocido",                     kcal: 23,  cantidad: 100, unidad: "g" },
+  { id: "canónigos",        nombre: "Canónigos",                       kcal: 21,  cantidad: 100, unidad: "g" },
+  { id: "alcachofas_coc",   nombre: "Alcachofas cocidas",              kcal: 50,  cantidad: 100, unidad: "g" },
+  { id: "esparragos_blancos",nombre: "Espárragos blancos",             kcal: 18,  cantidad: 100, unidad: "g" },
+  { id: "esparragos_trig",  nombre: "Espárragos trigueros",            kcal: 20,  cantidad: 100, unidad: "g" },
+  { id: "boniato_cocido",   nombre: "Boniato cocido",                  kcal: 90,  cantidad: 100, unidad: "g" },
+  { id: "yuca",             nombre: "Yuca / mandioca",                 kcal: 160, cantidad: 100, unidad: "g" },
+  { id: "ñame",             nombre: "Ñame",                            kcal: 118, cantidad: 100, unidad: "g" },
+
+  // ===== FRUTAS ADICIONALES =====
+  { id: "pomelo_rosa",      nombre: "Pomelo rosa",                     kcal: 42,  cantidad: 100, unidad: "g" },
+  { id: "dragon_fruit",     nombre: "Pitaya / fruta del dragón",       kcal: 50,  cantidad: 100, unidad: "g" },
+  { id: "acai",             nombre: "Açaí (pulpa congelada)",          kcal: 70,  cantidad: 100, unidad: "g" },
+  { id: "mango_verde",      nombre: "Mango verde",                     kcal: 60,  cantidad: 100, unidad: "g" },
+  { id: "tamarindo",        nombre: "Tamarindo",                       kcal: 239, cantidad: 100, unidad: "g" },
+  { id: "platano_macho",    nombre: "Plátano macho / platanito",       kcal: 122, cantidad: 100, unidad: "g" },
+  { id: "longan",           nombre: "Longan / longano",                kcal: 60,  cantidad: 100, unidad: "g" },
+
+  // ===== SALSAS, CONDIMENTOS Y ADEREZOS =====
+  { id: "salsa_tomate",     nombre: "Salsa de tomate casera",          kcal: 60,  cantidad: 100, unidad: "g" },
+  { id: "tomate_frito",     nombre: "Tomate frito",                    kcal: 78,  cantidad: 100, unidad: "g" },
+  { id: "alioli",           nombre: "Alioli",                          kcal: 450, cantidad: 100, unidad: "g" },
+  { id: "pesto",            nombre: "Pesto",                           kcal: 450, cantidad: 100, unidad: "g" },
+  { id: "mostaza",          nombre: "Mostaza",                         kcal: 60,  cantidad: 100, unidad: "g" },
+  { id: "salsa_soja",       nombre: "Salsa de soja",                   kcal: 60,  cantidad: 100, unidad: "g" },
+  { id: "vinagre",          nombre: "Vinagre",                         kcal: 18,  cantidad: 100, unidad: "g" },
+  { id: "vinagre_modena",   nombre: "Vinagre de Módena",               kcal: 88,  cantidad: 100, unidad: "g" },
+  { id: "mojo_picon",       nombre: "Mojo picón",                      kcal: 120, cantidad: 100, unidad: "g" },
+  { id: "chimichurri",      nombre: "Chimichurri",                     kcal: 200, cantidad: 100, unidad: "g" },
+  { id: "miel",             nombre: "Miel",                            kcal: 304, cantidad: 100, unidad: "g" },
+  { id: "mermelada",        nombre: "Mermelada",                       kcal: 250, cantidad: 100, unidad: "g" },
+  { id: "aceite_girasol",   nombre: "Aceite de girasol",               kcal: 884, cantidad: 100, unidad: "g" },
+
+  // ===== PLATOS TÍPICOS ESPAÑOLES (adicionales) =====
+  { id: "fabada",           nombre: "Fabada asturiana",                kcal: 200, cantidad: 100, unidad: "g" },
+  { id: "callos",           nombre: "Callos a la madrileña",           kcal: 170, cantidad: 100, unidad: "g" },
+  { id: "rabo_toro",        nombre: "Rabo de toro guisado",            kcal: 190, cantidad: 100, unidad: "g" },
+  { id: "ensaladilla",      nombre: "Ensaladilla rusa",                kcal: 180, cantidad: 100, unidad: "g" },
+  { id: "bacalao_pilpil",   nombre: "Bacalao al pil-pil",              kcal: 250, cantidad: 100, unidad: "g" },
+  { id: "fideuà",           nombre: "Fideuà",                          kcal: 165, cantidad: 100, unidad: "g" },
+  { id: "migas",            nombre: "Migas",                           kcal: 250, cantidad: 100, unidad: "g" },
+  { id: "pisto",            nombre: "Pisto manchego",                  kcal: 80,  cantidad: 100, unidad: "g" },
+  { id: "ropa_vieja",       nombre: "Ropa vieja",                      kcal: 155, cantidad: 100, unidad: "g" },
+  { id: "berberecho_vapor", nombre: "Berberechos al vapor",            kcal: 82,  cantidad: 100, unidad: "g" },
+
+  // ===== BEBIDAS =====
+  { id: "agua",             nombre: "Agua",                            kcal: 0,   cantidad: 100, unidad: "ml" },
+  { id: "cola_330",         nombre: "Refresco de cola (330ml)",        kcal: 139, cantidad: 1,   unidad: "lata" },
+  { id: "zumo_manzana",     nombre: "Zumo de manzana",                 kcal: 47,  cantidad: 100, unidad: "ml" },
+  { id: "zumo_pina",        nombre: "Zumo de piña",                    kcal: 50,  cantidad: 100, unidad: "ml" },
+  { id: "zumo_zanahoria",   nombre: "Zumo de zanahoria",               kcal: 40,  cantidad: 100, unidad: "ml" },
+  { id: "batido_chocolate", nombre: "Batido de chocolate",             kcal: 83,  cantidad: 100, unidad: "ml" },
+  { id: "isotonica",        nombre: "Bebida isotónica",                kcal: 25,  cantidad: 100, unidad: "ml" },
+
+  // ===== DULCES Y REPOSTERÍA =====
+  { id: "galleta_maria",    nombre: "Galleta María",                   kcal: 428, cantidad: 100, unidad: "g" },
+  { id: "galleta_avena",    nombre: "Galleta de avena",                kcal: 410, cantidad: 100, unidad: "g" },
+  { id: "bizcocho",         nombre: "Bizcocho casero",                 kcal: 380, cantidad: 100, unidad: "g" },
+  { id: "magdalena",        nombre: "Magdalena",                       kcal: 380, cantidad: 1,   unidad: "ud" },
+  { id: "croissant",        nombre: "Croissant",                       kcal: 406, cantidad: 100, unidad: "g" },
+  { id: "donuts",           nombre: "Donut",                           kcal: 380, cantidad: 1,   unidad: "ud" },
+  { id: "tarta_queso",      nombre: "Tarta de queso",                  kcal: 321, cantidad: 100, unidad: "g" },
+  { id: "brownie",          nombre: "Brownie de chocolate",            kcal: 410, cantidad: 100, unidad: "g" },
+
+  // ===== SNACKS Y VARIOS =====
+  { id: "nachos",           nombre: "Nachos / tortillas chips",        kcal: 490, cantidad: 100, unidad: "g" },
+  { id: "patatas_bolsa",    nombre: "Patatas fritas de bolsa",         kcal: 536, cantidad: 100, unidad: "g" },
+  { id: "arroz_tortitas",   nombre: "Tortitas de arroz y maíz",       kcal: 372, cantidad: 100, unidad: "g" },
+  { id: "barritas_cereal",  nombre: "Barrita de cereales",             kcal: 370, cantidad: 100, unidad: "g" },
+  { id: "fruta_seca_mix",   nombre: "Mix de frutos secos",             kcal: 560, cantidad: 100, unidad: "g" },
 ];
 
 /* ================== ESTADO ================== */
