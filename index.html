@@ -413,50 +413,55 @@
 
   <!-- VISTA MEDIDAS -->
   <section id="view-medidas" class="hidden">
+
+    <!-- Card 1: resumen TDEE calculado (se rellena por JS) -->
     <div class="setting-card" id="objetivo-card"></div>
 
+    <!-- Card 2: perfil metabólico — se rellena UNA vez, autosave -->
     <div class="setting-card">
-      <h3>Añadir medidas</h3>
-      <p>Apúntalas el mismo día del mes (por ejemplo, día 1) en ayunas. La cintura es la métrica que mejor sigue tu progreso.</p>
+      <h3>Tu perfil</h3>
+      <p style="font-size:13px;color:var(--muted);margin:0 0 14px">Rellénalo una vez y se guarda automáticamente.</p>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:6px">Sexo</div>
+      <div style="display:flex;gap:8px;margin-bottom:14px">
+        <button type="button" class="qty-btn" id="sexo-h-btn" style="flex:1">Hombre</button>
+        <button type="button" class="qty-btn" id="sexo-m-btn" style="flex:1">Mujer</button>
+      </div>
+      <div class="form-grid" style="margin-bottom:14px">
+        <label>Edad <input type="number" inputmode="numeric" id="m-edad" placeholder="35"></label>
+        <label>Altura (cm) <input type="number" inputmode="decimal" step="0.5" id="m-altura-perfil" placeholder="175"></label>
+      </div>
+      <label style="display:block;margin-bottom:14px">Nivel de actividad
+        <select id="m-actividad" style="margin-top:4px;padding:10px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--text);font-family:inherit;width:100%;box-sizing:border-box">
+          <option value="1.2">Sedentario — sin ejercicio</option>
+          <option value="1.375">Ligero — 1-3 días/sem</option>
+          <option value="1.55">Moderado — 3-5 días/sem</option>
+          <option value="1.725">Activo — 6-7 días/sem</option>
+          <option value="1.9">Muy activo — trabajo físico</option>
+        </select>
+      </label>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:8px">¿Qué quieres conseguir?</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px" id="ritmo-btns">
+        <button type="button" class="qty-btn" data-ritmo="0">Mantener peso</button>
+        <button type="button" class="qty-btn" data-ritmo="-300">Perder despacio<br><small style="font-weight:400;opacity:0.75">~300 g/sem</small></button>
+        <button type="button" class="qty-btn" data-ritmo="-500">Perder moderado<br><small style="font-weight:400;opacity:0.75">~500 g/sem</small></button>
+        <button type="button" class="qty-btn" data-ritmo="-750">Perder rápido<br><small style="font-weight:400;opacity:0.75">~750 g/sem</small></button>
+      </div>
+    </div>
+
+    <!-- Card 3: añadir medida periódica — solo datos corporales -->
+    <div class="setting-card">
+      <h3>Añadir medida</h3>
+      <p style="font-size:13px;color:var(--muted);margin:0 0 12px">El mismo día del mes, en ayunas. La cintura es la métrica más fiable.</p>
       <form id="medida-form">
         <div class="form-grid">
           <label>Fecha <input type="date" id="m-fecha" required></label>
-          <label>Peso (kg) <input type="number" inputmode="decimal" step="0.1" id="m-peso" required placeholder="120"></label>
-          <label>Altura (cm) <input type="number" inputmode="decimal" step="0.5" id="m-altura" placeholder="185"></label>
+          <label>Peso (kg) <input type="number" inputmode="decimal" step="0.1" id="m-peso" required placeholder="80.5"></label>
           <label>Cintura (cm) <input type="number" inputmode="decimal" step="0.5" id="m-cintura" placeholder="ombligo"></label>
           <label>Pecho (cm) <input type="number" inputmode="decimal" step="0.5" id="m-pecho" placeholder="línea pezones"></label>
           <label>Brazo (cm) <input type="number" inputmode="decimal" step="0.5" id="m-brazo" placeholder="contraído"></label>
           <label>Cadera (cm) <input type="number" inputmode="decimal" step="0.5" id="m-cadera" placeholder="parte más ancha"></label>
         </div>
         <label class="full-width">Notas <input type="text" id="m-notas" placeholder="energía, sueño, etc."></label>
-        <div style="border-top:1px solid var(--border);margin:14px 0 12px;padding-top:14px">
-          <div style="font-size:12px;color:var(--muted);margin-bottom:6px">Sexo</div>
-          <div style="display:flex;gap:8px;margin-bottom:12px">
-            <button type="button" class="qty-btn" id="sexo-h-btn" style="flex:1">Hombre</button>
-            <button type="button" class="qty-btn" id="sexo-m-btn" style="flex:1">Mujer</button>
-          </div>
-          <div class="form-grid">
-            <label>Edad <input type="number" inputmode="numeric" id="m-edad" placeholder="35"></label>
-            <label>Actividad
-              <select id="m-actividad" style="margin-top:4px;padding:10px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--text);font-family:inherit;width:100%;box-sizing:border-box">
-                <option value="1.2">Sedentario — sin ejercicio</option>
-                <option value="1.375">Ligero — 1-3 días/sem</option>
-                <option value="1.55">Moderado — 3-5 días/sem</option>
-                <option value="1.725">Activo — 6-7 días/sem</option>
-                <option value="1.9">Muy activo — trabajo físico</option>
-              </select>
-            </label>
-          </div>
-          <div style="margin-top:12px">
-            <div style="font-size:12px;color:var(--muted);margin-bottom:6px">¿Qué quieres conseguir?</div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px" id="ritmo-btns">
-              <button type="button" class="qty-btn" data-ritmo="0">Mantener peso</button>
-              <button type="button" class="qty-btn" data-ritmo="-300">Perder despacio<br><small style="font-weight:400;opacity:0.75">~300 g/semana</small></button>
-              <button type="button" class="qty-btn" data-ritmo="-500">Perder moderado<br><small style="font-weight:400;opacity:0.75">~500 g/semana</small></button>
-              <button type="button" class="qty-btn" data-ritmo="-750">Perder rápido<br><small style="font-weight:400;opacity:0.75">~750 g/semana</small></button>
-            </div>
-          </div>
-        </div>
         <button type="submit" class="btn">Guardar medida</button>
       </form>
     </div>
@@ -1259,6 +1264,7 @@ let state = {
   caloriaObjetivo: 2000,
   sexo: 'h',
   edad: null,
+  altura: null,
   nivelActividad: 1.55,
   ritmo: -300,
   nombre: ''
@@ -1890,17 +1896,27 @@ function renderHistory() {
   });
 }
 
+function recalcObjetivo() {
+  const sorted = [...state.medidas].sort((a, b) => b.date.localeCompare(a.date));
+  const peso = sorted.find(m => m.peso)?.peso || null;
+  const altura = state.altura || sorted.find(m => m.altura)?.altura || null;
+  if (peso && altura && state.edad) {
+    const bmr = Math.round(10 * peso + 6.25 * altura - 5 * state.edad + (state.sexo === 'h' ? 5 : -161));
+    const tdee = Math.round(bmr * (parseFloat(state.nivelActividad) || 1.55));
+    state.caloriaObjetivo = tdee + (state.ritmo || -300);
+  }
+}
+
 function renderObjetivoCard() {
   const card = document.getElementById("objetivo-card");
   if (!card) return;
 
   const sorted = [...state.medidas].sort((a, b) => b.date.localeCompare(a.date));
   const peso = sorted.find(m => m.peso)?.peso || null;
-  const altura = sorted.find(m => m.altura)?.altura || null;
+  const altura = state.altura || sorted.find(m => m.altura)?.altura || null;
   const sexo = state.sexo || 'h';
   const edad = state.edad || null;
   const actividad = parseFloat(state.nivelActividad) || 1.55;
-  const nombre = state.nombre || '';
 
   let bmr = null, tdee = null;
   if (peso && altura && edad) {
@@ -1908,55 +1924,32 @@ function renderObjetivoCard() {
     tdee = Math.round(bmr * actividad);
   }
 
-  const ritmoLabels = { 0: 'mantener peso', '-300': 'perder despacio', '-500': 'perder moderado', '-750': 'perder rápido' };
+  const ritmoLabels = { 0: 'mantener', '-300': 'perder despacio', '-500': 'perder moderado', '-750': 'perder rápido' };
   const ritmoLabel = ritmoLabels[String(state.ritmo ?? -300)] || 'déficit';
   const actividadLabels = { '1.2': 'Sedentario', '1.375': 'Ligero', '1.55': 'Moderado', '1.725': 'Activo', '1.9': 'Muy activo' };
   const actLabel = actividadLabels[String(actividad)] || 'Moderado';
   const sexoLabel = sexo === 'h' ? 'Hombre' : 'Mujer';
-
   const hasPerfil = peso && altura && edad;
 
+  if (!hasPerfil) {
+    card.innerHTML = `<div style="font-size:13px;color:var(--muted)">Rellena tu perfil (edad, altura y peso) para ver tu objetivo calórico.</div>`;
+    return;
+  }
+
   card.innerHTML = `
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
-      <div style="width:44px;height:44px;border-radius:50%;background:var(--primary);color:white;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;flex-shrink:0">
-        ${nombre ? escHtml(nombre[0].toUpperCase()) : '?'}
+    <div style="font-size:12px;color:var(--muted);margin-bottom:10px">${sexoLabel} · ${edad} años · ${peso} kg · ${altura} cm · ${actLabel}</div>
+    <div style="background:var(--primary-soft);border-radius:10px;padding:14px">
+      <div style="display:flex;justify-content:space-between;padding:3px 0;font-size:13px">
+        <span style="color:var(--muted)">Metabolismo basal (BMR)</span><b>${bmr} kcal</b>
       </div>
-      <div style="flex:1;min-width:0">
-        <input id="perfil-nombre-input" type="text" value="${escHtml(nombre)}" placeholder="Tu nombre (opcional)"
-          style="font-size:16px;font-weight:700;border:none;background:transparent;color:var(--text);width:100%;padding:0;outline:none;font-family:inherit">
-        <div style="font-size:12px;color:var(--muted);margin-top:2px">
-          ${hasPerfil ? `${sexoLabel} · ${edad} años · ${peso} kg · ${altura} cm` : 'Completa los datos para ver tu TDEE'}
-        </div>
+      <div style="display:flex;justify-content:space-between;padding:3px 0;font-size:13px;border-top:1px solid var(--border)">
+        <span style="color:var(--muted)">Mantenimiento · ${actLabel}</span><b>${tdee} kcal</b>
       </div>
-    </div>
-    ${hasPerfil ? `
-    <div style="background:var(--primary-soft);border-radius:10px;padding:14px;margin-bottom:0">
-      <div style="display:flex;justify-content:space-between;padding:3px 0;font-size:13px"><span style="color:var(--muted)">Metabolismo basal (BMR)</span><b>${bmr} kcal</b></div>
-      <div style="display:flex;justify-content:space-between;padding:3px 0;font-size:13px;border-top:1px solid var(--border)"><span style="color:var(--muted)">Mantenimiento · ${actLabel}</span><b>${tdee} kcal</b></div>
-      <div style="display:flex;justify-content:space-between;padding:5px 0 2px;font-size:14px;border-top:1px solid var(--border);color:var(--accent-strong)"><span style="font-weight:600">Objetivo (${ritmoLabel})</span><b>${tdee + (state.ritmo || -300)} kcal</b></div>
-    </div>` : `<div style="font-size:13px;color:var(--muted);padding:4px 0">Introduce peso, altura y edad en el formulario de abajo.</div>`}
-    <div style="padding-top:12px;margin-top:12px;border-top:1px solid var(--border)">
-      <div style="font-size:12px;color:var(--muted);margin-bottom:6px">Objetivo actual: <b>${state.caloriaObjetivo} kcal</b> · ajuste manual:</div>
-      <div style="display:flex;gap:8px">
-        <input type="number" inputmode="numeric" id="objetivo-kcal-input" value="${state.caloriaObjetivo}"
-          style="flex:1;padding:10px;border:1px solid var(--border);border-radius:8px;font-size:16px;font-weight:700;background:var(--bg);color:var(--text);">
-        <button class="btn" style="width:auto;flex-shrink:0" id="objetivo-save-btn">Guardar</button>
+      <div style="display:flex;justify-content:space-between;padding:6px 0 2px;font-size:15px;border-top:1px solid var(--border);color:var(--accent-strong)">
+        <span style="font-weight:700">Objetivo · ${ritmoLabel}</span><b>${tdee + (state.ritmo || -300)} kcal</b>
       </div>
     </div>
   `;
-
-  card.querySelector("#objetivo-save-btn").addEventListener("click", () => {
-    const v = parseInt(card.querySelector("#objetivo-kcal-input").value);
-    if (v > 0) { state.caloriaObjetivo = v; saveState(); toast("Objetivo guardado"); renderObjetivoCard(); }
-  });
-
-  card.querySelector("#perfil-nombre-input").addEventListener("change", e => {
-    state.nombre = e.target.value.trim();
-    saveState();
-    // Actualiza solo el avatar inicial sin re-renderizar todo
-    const avatar = card.querySelector("div[style*='border-radius:50%']");
-    if (avatar) avatar.textContent = state.nombre ? state.nombre[0].toUpperCase() : '?';
-  });
 }
 
 function renderSettings() {
@@ -2144,7 +2137,8 @@ function renderProgressionChart() {
 /* ================== MEDIDAS ================== */
 function renderMedidas() {
   document.getElementById("m-fecha").value = new Date().toISOString().slice(0,10);
-  if (state.edad) document.getElementById("m-edad").value = state.edad;
+  if (state.edad)   document.getElementById("m-edad").value = state.edad;
+  if (state.altura) document.getElementById("m-altura-perfil").value = state.altura;
   document.getElementById("m-actividad").value = String(state.nivelActividad || 1.55);
   document.getElementById("sexo-h-btn").classList.toggle("active", state.sexo !== "m");
   document.getElementById("sexo-m-btn").classList.toggle("active", state.sexo === "m");
@@ -2167,7 +2161,7 @@ function addMedida(e) {
   const m = {
     date: fecha,
     peso: peso,
-    altura: parseFloat(document.getElementById("m-altura").value) || null,
+    altura: state.altura || null,
     cintura: parseFloat(document.getElementById("m-cintura").value) || null,
     pecho:   parseFloat(document.getElementById("m-pecho").value)   || null,
     brazo:   parseFloat(document.getElementById("m-brazo").value)   || null,
@@ -2175,18 +2169,8 @@ function addMedida(e) {
     notas:   document.getElementById("m-notas").value || ""
   };
   state.medidas.push(m);
-
-  // Recalcular objetivo calórico automáticamente
-  const altura2 = m.altura || [...state.medidas].reverse().find(x => x.altura)?.altura;
-  if (altura2 && state.edad) {
-    const bmr = Math.round(10 * peso + 6.25 * altura2 - 5 * state.edad + (state.sexo === 'h' ? 5 : -161));
-    const tdee = Math.round(bmr * (parseFloat(state.nivelActividad) || 1.55));
-    const nuevo = tdee + (state.ritmo || -300);
-    state.caloriaObjetivo = nuevo;
-  }
-
+  recalcObjetivo();
   saveState();
-  // Limpiar el form (menos altura, que suele ser constante)
   ["m-peso","m-cintura","m-pecho","m-brazo","m-cadera","m-notas"].forEach(id => {
     document.getElementById(id).value = "";
   });
@@ -2235,8 +2219,8 @@ function renderMedidasGraficas() {
   const ptsCad = ordenadas.filter(m => m.cadera != null).map(m => ({x: m.date, y: m.cadera}));
   if (ptsCad.length > 0) charts.push(chartSVG(ptsCad, { label: "Cadera (cm)", unit: "cm" }));
 
-  // IMC (si hay altura)
-  const ultAltura = [...ordenadas].reverse().find(m => m.altura)?.altura;
+  // IMC (usa altura del perfil; fallback a última medida con altura)
+  const ultAltura = state.altura || [...ordenadas].reverse().find(m => m.altura)?.altura;
   if (ultAltura) {
     const ptsImc = ordenadas.filter(m => m.peso != null).map(m => {
       const altCm = m.altura || ultAltura;
@@ -2286,31 +2270,36 @@ function renderMedidasLista() {
 document.getElementById("medida-form").addEventListener("submit", addMedida);
 
 document.getElementById("sexo-h-btn").addEventListener("click", () => {
-  state.sexo = "h"; saveState();
+  state.sexo = "h";
   document.getElementById("sexo-h-btn").classList.add("active");
   document.getElementById("sexo-m-btn").classList.remove("active");
-  renderObjetivoCard();
+  recalcObjetivo(); saveState(); renderObjetivoCard();
 });
 document.getElementById("sexo-m-btn").addEventListener("click", () => {
-  state.sexo = "m"; saveState();
+  state.sexo = "m";
   document.getElementById("sexo-m-btn").classList.add("active");
   document.getElementById("sexo-h-btn").classList.remove("active");
-  renderObjetivoCard();
+  recalcObjetivo(); saveState(); renderObjetivoCard();
 });
 document.getElementById("m-edad").addEventListener("change", e => {
-  const v = parseInt(e.target.value); if (v > 0) { state.edad = v; saveState(); renderObjetivoCard(); }
+  const v = parseInt(e.target.value);
+  if (v > 0) { state.edad = v; recalcObjetivo(); saveState(); renderObjetivoCard(); }
+});
+document.getElementById("m-altura-perfil").addEventListener("change", e => {
+  const v = parseFloat(e.target.value);
+  if (v > 0) { state.altura = v; recalcObjetivo(); saveState(); renderObjetivoCard(); }
 });
 document.getElementById("m-actividad").addEventListener("change", e => {
-  state.nivelActividad = parseFloat(e.target.value); saveState(); renderObjetivoCard();
+  state.nivelActividad = parseFloat(e.target.value);
+  recalcObjetivo(); saveState(); renderObjetivoCard();
 });
 document.querySelectorAll("#ritmo-btns .qty-btn").forEach(btn => {
   btn.addEventListener("click", () => {
     state.ritmo = parseFloat(btn.dataset.ritmo);
-    saveState();
     document.querySelectorAll("#ritmo-btns .qty-btn").forEach(b =>
       b.classList.toggle("active", b === btn)
     );
-    renderObjetivoCard();
+    recalcObjetivo(); saveState(); renderObjetivoCard();
   });
 });
 
