@@ -515,7 +515,7 @@
     <div class="setting-card">
       <h3>Sobre la rutina</h3>
       <p>Plan v2 con compuestos 5x5 y recordatorios cruzados. 4 días pesas + cardio miércoles. Adaptada a condromalacia rotuliana derecha.</p>
-      <p style="font-size:11px;color:var(--muted);margin:8px 0 0">versión 15</p>
+      <p style="font-size:11px;color:var(--muted);margin:8px 0 0">versión 16</p>
     </div>
   </section>
 </main>
@@ -727,6 +727,7 @@ let calUi = {
   addCustomMode: false,
   isListening: false,
   voiceMode: false,
+  voiceSearching: false,
   voiceResults: [],
   liveTranscript: '',
   interimText: '',
@@ -1875,6 +1876,8 @@ function renderCalorias() {
     panel.className = "cal-add-panel";
     if (calUi.isListening) {
       buildListeningIndicator(panel);
+    } else if (calUi.voiceSearching) {
+      panel.innerHTML = `<div style="text-align:center;padding:32px 0"><div style="font-size:28px;margin-bottom:12px">🔍</div><div style="font-size:15px;font-weight:700;margin-bottom:6px">Buscando alimentos…</div><div style="font-size:13px;color:var(--muted)">Consultando Open Food Facts para los que no estaban localmente</div></div>`;
     } else if (calUi.voiceMode) {
       buildVoiceConfirmPanel(panel);
     } else if (calUi.selectedFood) {
@@ -2211,7 +2214,7 @@ function startVoiceInput() {
   createRec();
 }
 
-function stopVoiceInput() {
+async function stopVoiceInput() {
   calUi.isListening = false;
   if (voiceRec) { try { voiceRec.stop(); } catch(e) {} voiceRec = null; }
   const text = (calUi.liveTranscript + ' ' + calUi.interimText).trim();
@@ -2220,18 +2223,33 @@ function stopVoiceInput() {
   if (!text) { calUi.panelOpen = false; renderCalorias(); return; }
 
   const results = parseVoiceTranscript(text);
-  const matched = results.filter(r => r.matched);
-  const unmatched = results.filter(r => !r.matched);
+  let matched = results.filter(r => r.matched);
+  let unmatched = results.filter(r => !r.matched);
+
+  // Para los no encontrados localmente → buscar en Open Food Facts en paralelo
+  if (unmatched.length > 0) {
+    calUi.voiceSearching = true;
+    renderCalorias();
+    const offFound = await Promise.all(unmatched.map(async r => {
+      const hits = await searchOpenFoodFacts(r.foodQuery);
+      if (hits.length > 0) {
+        const food = hits[0];
+        return { ...r, food, matched: true, totalKcal: Math.round((food.kcal / food.cantidad) * r.cantidad) };
+      }
+      return r;
+    }));
+    calUi.voiceSearching = false;
+    matched = [...matched, ...offFound.filter(r => r.matched)];
+    unmatched = offFound.filter(r => !r.matched);
+  }
 
   if (matched.length === 0) {
-    // Nada reconocido — mostrar panel para que el usuario vea qué pasó
     calUi.voiceResults = results;
     calUi.voiceMode = true;
     renderCalorias();
     return;
   }
 
-  // Auto-añadir todo sin confirmación
   const total = matched.reduce((s, r) => s + r.totalKcal, 0);
   matched.forEach(r => addFoodEntry(r.food, r.cantidad));
   calUi.panelOpen = false;
