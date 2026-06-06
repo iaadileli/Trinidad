@@ -515,7 +515,7 @@
     <div class="setting-card">
       <h3>Sobre la rutina</h3>
       <p>Plan v2 con compuestos 5x5 y recordatorios cruzados. 4 días pesas + cardio miércoles. Adaptada a condromalacia rotuliana derecha.</p>
-      <p style="font-size:11px;color:var(--muted);margin:8px 0 0">versión 19</p>
+      <p style="font-size:11px;color:var(--muted);margin:8px 0 0">versión 20</p>
     </div>
   </section>
 </main>
@@ -586,11 +586,11 @@ const DIA_KEYS = ["Día 1","Día 2","Día 3","Día 4","Día 5"];
 const ALIMENTOS_BASE = [
   { id: "huevo",           nombre: "Huevo entero",                  kcal: 90,  cantidad: 1,   unidad: "ud" },
   { id: "clara",           nombre: "Clara de huevo",                kcal: 17,  cantidad: 1,   unidad: "ud" },
-  { id: "pechuga_pollo",   nombre: "Pechuga de pollo",              kcal: 165, cantidad: 100, unidad: "g" },
-  { id: "pechuga_pavo",    nombre: "Pechuga de pavo",               kcal: 135, cantidad: 100, unidad: "g" },
+  { id: "pechuga_pollo",   nombre: "Pechuga de pollo cocida",       kcal: 165, cantidad: 100, unidad: "g" },
+  { id: "pechuga_pavo",    nombre: "Pechuga de pavo cocida",        kcal: 135, cantidad: 100, unidad: "g" },
   { id: "atun_lata",       nombre: "Atún en agua (lata 80g)",       kcal: 80,  cantidad: 1,   unidad: "lata" },
   { id: "salmon",          nombre: "Salmón",                        kcal: 208, cantidad: 100, unidad: "g" },
-  { id: "ternera_magra",   nombre: "Ternera magra",                 kcal: 190, cantidad: 100, unidad: "g" },
+  { id: "ternera_magra",   nombre: "Ternera magra cocida",          kcal: 190, cantidad: 100, unidad: "g" },
   { id: "jamon_york",      nombre: "Jamón de York",                 kcal: 110, cantidad: 100, unidad: "g" },
   { id: "jamon_serrano",   nombre: "Jamón serrano",                 kcal: 250, cantidad: 100, unidad: "g" },
   { id: "leche_entera",    nombre: "Leche entera (vaso 200ml)",     kcal: 122, cantidad: 1,   unidad: "vaso" },
@@ -682,8 +682,8 @@ const ALIMENTOS_BASE = [
   { id: "pulpo",           nombre: "Pulpo",                         kcal: 57,  cantidad: 100, unidad: "g" },
   { id: "rape",            nombre: "Rape",                          kcal: 73,  cantidad: 100, unidad: "g" },
   // Carnes (BEDCA, por 100 g)
-  { id: "cerdo_lomo",      nombre: "Lomo de cerdo",                 kcal: 145, cantidad: 100, unidad: "g" },
-  { id: "pollo_muslo",     nombre: "Muslo de pollo",                kcal: 175, cantidad: 100, unidad: "g" },
+  { id: "cerdo_lomo",      nombre: "Lomo de cerdo cocido",          kcal: 145, cantidad: 100, unidad: "g" },
+  { id: "pollo_muslo",     nombre: "Muslo de pollo cocido",         kcal: 175, cantidad: 100, unidad: "g" },
   { id: "cordero",         nombre: "Cordero",                       kcal: 178, cantidad: 100, unidad: "g" },
   { id: "conejo",          nombre: "Conejo",                        kcal: 121, cantidad: 100, unidad: "g" },
   { id: "chorizo",         nombre: "Chorizo",                       kcal: 430, cantidad: 100, unidad: "g" },
@@ -816,6 +816,72 @@ const ALIMENTOS_BASE = [
   { id: "pollo_asado",   nombre: "Pollo asado",                      kcal: 195, cantidad: 100, unidad: "g" },
   { id: "salmorejo_c",   nombre: "Salmorejo",                        kcal: 120, cantidad: 100, unidad: "g" },
   { id: "fideos_c",      nombre: "Fideos cocidos",                   kcal: 131, cantidad: 100, unidad: "g" },
+
+  // ===== CARNES Y AVES — versiones CRUDAS =====
+  { id: "pechuga_cruda",    nombre: "Pechuga de pollo cruda",          kcal: 109, cantidad: 100, unidad: "g" },
+  { id: "pavo_crudo",       nombre: "Pechuga de pavo cruda",           kcal: 104, cantidad: 100, unidad: "g" },
+  { id: "muslo_crudo",      nombre: "Muslo de pollo crudo",            kcal: 130, cantidad: 100, unidad: "g" },
+  { id: "pollo_crudo",      nombre: "Pollo entero crudo",              kcal: 167, cantidad: 100, unidad: "g" },
+  { id: "ternera_cruda",    nombre: "Ternera magra cruda",             kcal: 143, cantidad: 100, unidad: "g" },
+  { id: "filete_crudo",     nombre: "Filete de ternera crudo",         kcal: 105, cantidad: 100, unidad: "g" },
+  { id: "cerdo_crudo",      nombre: "Lomo de cerdo crudo",             kcal: 122, cantidad: 100, unidad: "g" },
+  { id: "solomillo_crudo",  nombre: "Solomillo de cerdo crudo",        kcal: 118, cantidad: 100, unidad: "g" },
+  { id: "solomillo_res",    nombre: "Solomillo de ternera crudo",      kcal: 140, cantidad: 100, unidad: "g" },
+  { id: "cordero_crudo",    nombre: "Cordero crudo",                   kcal: 153, cantidad: 100, unidad: "g" },
+  { id: "conejo_crudo",     nombre: "Conejo crudo",                    kcal: 114, cantidad: 100, unidad: "g" },
+  { id: "pechuga_plancha",  nombre: "Pechuga de pollo a la plancha",   kcal: 165, cantidad: 100, unidad: "g" },
+  { id: "pechuga_horno",    nombre: "Pechuga de pollo al horno",       kcal: 163, cantidad: 100, unidad: "g" },
+  { id: "pollo_hervido",    nombre: "Pollo hervido / cocido",          kcal: 153, cantidad: 100, unidad: "g" },
+  { id: "ternera_plancha",  nombre: "Ternera a la plancha",            kcal: 190, cantidad: 100, unidad: "g" },
+  { id: "cerdo_plancha",    nombre: "Lomo de cerdo a la plancha",      kcal: 175, cantidad: 100, unidad: "g" },
+
+  // ===== CEREALES Y PASTA — versiones CRUDAS (en seco) =====
+  { id: "arroz_crudo",      nombre: "Arroz blanco crudo",              kcal: 350, cantidad: 100, unidad: "g" },
+  { id: "arroz_int_crudo",  nombre: "Arroz integral crudo",            kcal: 362, cantidad: 100, unidad: "g" },
+  { id: "pasta_cruda",      nombre: "Pasta cruda",                     kcal: 350, cantidad: 100, unidad: "g" },
+  { id: "espaguetis_cru",   nombre: "Espaguetis crudos",               kcal: 350, cantidad: 100, unidad: "g" },
+  { id: "macarrones_cru",   nombre: "Macarrones crudos",               kcal: 352, cantidad: 100, unidad: "g" },
+  { id: "cuscus_crudo",     nombre: "Cuscús crudo",                    kcal: 376, cantidad: 100, unidad: "g" },
+  { id: "quinoa_cruda",     nombre: "Quinoa cruda",                    kcal: 368, cantidad: 100, unidad: "g" },
+  { id: "bulgur_crudo",     nombre: "Bulgur crudo",                    kcal: 342, cantidad: 100, unidad: "g" },
+
+  // ===== LEGUMBRES — versiones SECAS (crudas) =====
+  { id: "lentejas_secas",   nombre: "Lentejas secas",                  kcal: 353, cantidad: 100, unidad: "g" },
+  { id: "garbanzos_secos",  nombre: "Garbanzos secos",                 kcal: 364, cantidad: 100, unidad: "g" },
+  { id: "alubias_secas",    nombre: "Alubias secas",                   kcal: 340, cantidad: 100, unidad: "g" },
+  { id: "habas_secas",      nombre: "Habas secas",                     kcal: 341, cantidad: 100, unidad: "g" },
+
+  // ===== PESCADOS — versiones COCINADAS =====
+  { id: "salmon_cocido",    nombre: "Salmón cocinado",                 kcal: 216, cantidad: 100, unidad: "g" },
+  { id: "merluza_cocida",   nombre: "Merluza cocinada",                kcal: 90,  cantidad: 100, unidad: "g" },
+  { id: "atun_cocido",      nombre: "Atún cocinado a la plancha",      kcal: 184, cantidad: 100, unidad: "g" },
+  { id: "dorada_horno",     nombre: "Dorada al horno",                 kcal: 106, cantidad: 100, unidad: "g" },
+  { id: "lubina_horno",     nombre: "Lubina al horno",                 kcal: 90,  cantidad: 100, unidad: "g" },
+  { id: "sardina_plancha",  nombre: "Sardinas a la plancha",           kcal: 200, cantidad: 100, unidad: "g" },
+  { id: "gambas_plancha",   nombre: "Gambas a la plancha",             kcal: 112, cantidad: 100, unidad: "g" },
+
+  // ===== PATATAS — formas de preparación =====
+  { id: "patata_cruda",     nombre: "Patata cruda",                    kcal: 77,  cantidad: 100, unidad: "g" },
+  { id: "patata_horno",     nombre: "Patata al horno",                 kcal: 93,  cantidad: 100, unidad: "g" },
+  { id: "patata_vapor",     nombre: "Patata cocida al vapor",          kcal: 70,  cantidad: 100, unidad: "g" },
+  { id: "patata_frita",     nombre: "Patatas fritas en aceite",        kcal: 312, cantidad: 100, unidad: "g" },
+  { id: "boniato_horno",    nombre: "Boniato al horno",                kcal: 90,  cantidad: 100, unidad: "g" },
+  { id: "boniato_crudo",    nombre: "Boniato crudo",                   kcal: 86,  cantidad: 100, unidad: "g" },
+
+  // ===== HUEVOS — preparaciones =====
+  { id: "huevo_frito",      nombre: "Huevo frito",                     kcal: 110, cantidad: 1,   unidad: "ud" },
+  { id: "yema_huevo",       nombre: "Yema de huevo",                   kcal: 60,  cantidad: 1,   unidad: "ud" },
+  { id: "tortilla_2huevos", nombre: "Tortilla francesa (2 huevos)",    kcal: 190, cantidad: 1,   unidad: "ud" },
+
+  // ===== VERDURAS — versiones COCINADAS más usadas =====
+  { id: "brocoli_crudo",    nombre: "Brócoli crudo",                   kcal: 30,  cantidad: 100, unidad: "g" },
+  { id: "zanahoria_coc",    nombre: "Zanahoria cocida",                kcal: 35,  cantidad: 100, unidad: "g" },
+  { id: "esparragos_plan",  nombre: "Espárragos a la plancha",         kcal: 24,  cantidad: 100, unidad: "g" },
+  { id: "pimiento_asado",   nombre: "Pimiento asado",                  kcal: 40,  cantidad: 100, unidad: "g" },
+  { id: "calabacin_planch", nombre: "Calabacín a la plancha",          kcal: 15,  cantidad: 100, unidad: "g" },
+  { id: "judias_coc",       nombre: "Judías verdes cocidas",           kcal: 28,  cantidad: 100, unidad: "g" },
+  { id: "coliflor_coc",     nombre: "Coliflor cocida",                 kcal: 23,  cantidad: 100, unidad: "g" },
+  { id: "espinacas_coc",    nombre: "Espinacas cocidas",               kcal: 23,  cantidad: 100, unidad: "g" },
 ];
 
 /* ================== ESTADO ================== */
