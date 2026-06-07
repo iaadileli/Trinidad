@@ -268,6 +268,46 @@
 
   .hidden { display: none !important; }
 
+  /* ===== PIN LOCK ===== */
+  #pin-overlay {
+    position: fixed; inset: 0; z-index: 9999;
+    background: var(--bg);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 32px 20px;
+  }
+  #pin-overlay h2 { font-size: 22px; font-weight: 700; margin: 0 0 6px; letter-spacing: -0.5px; }
+  #pin-overlay .pin-sub { font-size: 14px; color: var(--muted); margin: 0 0 28px; }
+  .pin-dots { display: flex; gap: 18px; margin-bottom: 32px; }
+  .pin-dot {
+    width: 14px; height: 14px; border-radius: 50%;
+    border: 2px solid var(--border); background: transparent;
+    transition: background 0.12s, border-color 0.12s;
+  }
+  .pin-dot.filled { background: var(--text); border-color: var(--text); }
+  .pin-keypad { display: grid; grid-template-columns: repeat(3, 76px); gap: 14px; }
+  .pin-key {
+    width: 76px; height: 76px; border-radius: 50%;
+    border: 1px solid var(--border); background: var(--card);
+    font-size: 26px; font-weight: 500; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.1s; -webkit-tap-highlight-color: transparent;
+    box-shadow: var(--shadow);
+  }
+  .pin-key:active, .pin-key:focus { background: var(--primary-soft); outline: none; }
+  .pin-key.del { font-size: 18px; }
+  .pin-key.empty { border: none; background: transparent; pointer-events: none; box-shadow: none; }
+  .pin-error {
+    color: var(--danger); font-size: 13px; margin-top: 16px; min-height: 18px; text-align: center;
+  }
+  .pin-shake { animation: pinShake 0.35s ease; }
+  @keyframes pinShake {
+    0%,100% { transform: translateX(0); }
+    20% { transform: translateX(-8px); }
+    40% { transform: translateX(8px); }
+    60% { transform: translateX(-6px); }
+    80% { transform: translateX(6px); }
+  }
+
   /* Form de medidas */
   .form-grid {
     display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
@@ -507,6 +547,7 @@
       <p>La app recuerda el último peso que has metido en cada ejercicio para sugerírtelo la próxima vez.</p>
       <div id="last-loads"></div>
     </div>
+    <div class="setting-card" id="pin-settings-card"></div>
     <div class="setting-card">
       <h3>Datos</h3>
       <p>Borra todo el histórico de sesiones. Esta acción no se puede deshacer.</p>
@@ -520,7 +561,7 @@
     <div class="setting-card">
       <h3>Sobre la rutina</h3>
       <p>Plan v2 con compuestos 5x5 y recordatorios cruzados. 4 días pesas + cardio miércoles. Adaptada a condromalacia rotuliana derecha.</p>
-      <p style="font-size:11px;color:var(--muted);margin:8px 0 0">versión 23</p>
+      <p style="font-size:11px;color:var(--muted);margin:8px 0 0">versión 29</p>
     </div>
   </section>
 </main>
@@ -1953,6 +1994,21 @@ function renderObjetivoCard() {
 }
 
 function renderSettings() {
+  const pinCard = document.getElementById('pin-settings-card');
+  if (pinCard) {
+    const hasPin = !!getStoredPin();
+    pinCard.innerHTML = `
+      <h3>PIN de seguridad</h3>
+      <p>${hasPin ? 'La app está protegida con PIN.' : 'Activa un PIN para proteger la app al abrirla.'}</p>
+      ${hasPin
+        ? `<div style="display:flex;gap:8px;flex-wrap:wrap">
+             <button class="btn" onclick="changePin()">Cambiar PIN</button>
+             <button class="btn secondary" onclick="disablePin()">Desactivar</button>
+           </div>`
+        : `<button class="btn" onclick="activatePin()">Activar PIN</button>`
+      }
+    `;
+  }
   const misAlimentosList = document.getElementById("mis-alimentos-list");
   if (misAlimentosList) {
     if (state.foods.length === 0) {
@@ -3148,12 +3204,120 @@ function resetData() {
   toast("Datos borrados");
 }
 
+/* ================== PIN LOCK ================== */
+const PIN_KEY = 'rutina-pin';
+
+function getStoredPin() { return localStorage.getItem(PIN_KEY); }
+function savePin(pin) { localStorage.setItem(PIN_KEY, pin); }
+function deletePin() { localStorage.removeItem(PIN_KEY); }
+
+function buildPinScreen(title, subtitle, onCorrect, onCancel) {
+  const overlay = document.createElement('div');
+  overlay.id = 'pin-overlay';
+  let entered = '';
+  let errMsg = '';
+
+  function render() {
+    overlay.innerHTML = `
+      <h2>Mi rutina</h2>
+      <p class="pin-sub">${subtitle}</p>
+      <div class="pin-dots" id="pin-dots-row">
+        ${[0,1,2,3].map(i => `<div class="pin-dot${i < entered.length ? ' filled' : ''}"></div>`).join('')}
+      </div>
+      <div class="pin-keypad">
+        ${[1,2,3,4,5,6,7,8,9,'','0','⌫'].map(k =>
+          k === '' ? `<div class="pin-key empty"></div>` :
+          `<button class="pin-key${k==='⌫'?' del':''}" data-k="${k}">${k}</button>`
+        ).join('')}
+      </div>
+      <div class="pin-error">${errMsg}</div>
+      ${onCancel ? `<button class="btn secondary" id="pin-cancel-btn" style="margin-top:20px;width:180px">Cancelar</button>` : ''}
+    `;
+    overlay.querySelectorAll('.pin-key:not(.empty)').forEach(btn => {
+      btn.addEventListener('click', () => pressKey(btn.dataset.k));
+    });
+    if (onCancel) overlay.querySelector('#pin-cancel-btn').addEventListener('click', () => {
+      overlay.remove(); onCancel();
+    });
+  }
+
+  function pressKey(k) {
+    if (k === '⌫') { entered = entered.slice(0, -1); errMsg = ''; render(); return; }
+    if (entered.length >= 4) return;
+    entered += k;
+    errMsg = '';
+    render();
+    if (entered.length === 4) {
+      setTimeout(() => {
+        const ok = onCorrect(entered);
+        if (!ok) {
+          entered = '';
+          errMsg = 'PIN incorrecto, inténtalo de nuevo';
+          render();
+          const dots = overlay.querySelector('#pin-dots-row');
+          if (dots) { dots.classList.add('pin-shake'); setTimeout(() => dots.classList.remove('pin-shake'), 400); }
+        }
+      }, 120);
+    }
+  }
+
+  render();
+  return overlay;
+}
+
+function showPinLock() {
+  const stored = getStoredPin();
+  if (!stored) return;
+  const overlay = buildPinScreen('Desbloquear', 'Introduce tu PIN', pin => {
+    if (pin === stored) { overlay.remove(); return true; }
+    return false;
+  }, null);
+  document.body.appendChild(overlay);
+}
+
+function activatePin() {
+  let firstPin = '';
+  const step1 = buildPinScreen('Nuevo PIN', 'Elige un PIN de 4 dígitos', pin => {
+    firstPin = pin; step1.remove();
+    const step2 = buildPinScreen('Confirmar PIN', 'Repite el PIN para confirmar', pin2 => {
+      if (pin2 === firstPin) {
+        savePin(pin2); step2.remove();
+        toast('PIN activado'); renderSettings(); return true;
+      }
+      return false;
+    }, () => { renderSettings(); });
+    document.body.appendChild(step2);
+    return true;
+  }, () => { renderSettings(); });
+  document.body.appendChild(step1);
+}
+
+function changePin() {
+  const stored = getStoredPin();
+  const stepOld = buildPinScreen('Cambiar PIN', 'Introduce el PIN actual', pin => {
+    if (pin !== stored) return false;
+    stepOld.remove();
+    activatePin(); return true;
+  }, () => { renderSettings(); });
+  document.body.appendChild(stepOld);
+}
+
+function disablePin() {
+  const stored = getStoredPin();
+  const step = buildPinScreen('Desactivar PIN', 'Introduce el PIN actual para desactivarlo', pin => {
+    if (pin !== stored) return false;
+    deletePin(); step.remove(); toast('PIN desactivado'); renderSettings(); return true;
+  }, () => { renderSettings(); });
+  document.body.appendChild(step);
+}
+
 /* ================== INIT ================== */
 loadState();
 renderTabs();
 renderDayPicker();
 updateWeekdayLabel();
 renderExercises();
+showPinLock();
 
 // Service worker básico para offline (solo si el navegador lo soporta y estamos en https/file)
 if ("serviceWorker" in navigator && location.protocol !== "file:") {
