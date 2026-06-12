@@ -1,11 +1,11 @@
 {
-    "name": "rutina_flutter",
-    "short_name": "rutina_flutter",
+    "name": "Trinidad",
+    "short_name": "Trinidad",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "Tu app de entrenamiento y nutrición",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
