@@ -28591,8 +28591,8 @@ this.b=b},
 aro:function aro(a){this.a=a},
 arp:function arp(a){this.a=a},
 a7t(a){return a===B.d.ky(a)?B.h.k(B.d.aC(a)):B.d.a9(a,1)},
-aJt(a,b,c){var s=A.pE(c.d)
-A.aFo(new A.aFC(new A.dP(new A.cv(s,B.bq,B.al),$.ao()),c,b),a,t.z)},
+aJt(a,b,c){var s=A.pE(c.d),r=A.cV(a,!1)
+A.aFo(new A.aFC(new A.dP(new A.cv(s,B.bq,B.al),$.ao()),c,b,r),a,t.z)},
 pE(a){return a===B.d.ky(a)?B.h.k(B.d.aC(a)):B.d.a9(a,1)},
 MN:function MN(a,b){this.c=a
 this.a=b},
@@ -28612,12 +28612,14 @@ a7A:function a7A(a,b){this.a=a
 this.b=b},
 a7u:function a7u(a,b){this.a=a
 this.b=b},
-aFC:function aFC(a,b,c){this.a=a
+aFC:function aFC(a,b,c,d){this.a=a
 this.b=b
-this.c=c},
-aFB:function aFB(a,b,c){this.a=a
+this.c=c
+this.d=d},
+aFB:function aFB(a,b,c,d){this.a=a
 this.b=b
-this.c=c},
+this.c=c
+this.d=d},
 aFx:function aFx(a,b,c){this.a=a
 this.b=b
 this.c=c},
@@ -28630,9 +28632,10 @@ aFu:function aFu(){},
 aFy:function aFy(a){this.a=a},
 aFv:function aFv(){},
 aFz:function aFz(a){this.a=a},
-aFA:function aFA(a,b,c){this.a=a
+aFA:function aFA(a,b,c,d){this.a=a
 this.b=b
-this.c=c},
+this.c=c
+this.d=d},
 zi:function zi(a,b){this.c=a
 this.a=b},
 Gg:function Gg(a,b,c,d){var _=this
@@ -96391,7 +96394,7 @@ A.a7u.prototype={
 $1(a){return new A.bF(new A.ab(0,0,0,A.bO(this.a,null,t.w).w.f.d),new A.zi(this.b,null),null)},
 $S:243}
 A.aFC.prototype={
-$1(a){return new A.oR(new A.aFB(this.a,this.b,this.c),null)},
+$1(a){return new A.oR(new A.aFB(this.a,this.b,this.c,this.d),null)},
 $S:244}
 A.aFB.prototype={
 $2(a,b){var s,r,q,p,o,n,m=this,l=null,k=m.a,j=k.a.a,i=A.j2(A.eK(j,",","."))
@@ -96405,7 +96408,7 @@ p=t.p
 q=A.d2(A.b([A.aIk(q,0,6),B.cO,A.mJ(!1,k,A.C1(l,B.Qj,l,l,l,l,l,l,!0,l,l,l,l,l,l,l,l,l,l,l,l,l,l,l,l,l,l,l,l,l,l,l,l,l,l,l,l,l,l,l,"Cantidad ("+j.e+")",!0,!0,!1,l,l,l,l,l,l,l,l,l,l,l,l,l,l),l,B.mF,1,new A.aFy(b),l,B.ab),B.du,A.ac(""+B.d.aC(j.c/j.d*i)+" kcal",l,l,l,A.fw(s,20,B.cp),l,l)],p),B.z,B.r,B.bn)
 o=A.mH(A.ac("Cancelar",l,l,l,A.bu(s,s.f,14,B.n),l,l),new A.aFz(a),l)
 n=A.B5(l,l,s.y,l,l,l,l,l,l,l,l,l,l,l,l,l,l,l,l,l)
-return A.a5_(A.b([o,A.NH(A.ac("A\xf1adir",l,l,l,A.bu(s,s.Q,14,B.A),l,l),new A.aFA(k,a,j),n)],p),B.a2,q,r)},
+return A.a5_(A.b([o,A.NH(A.ac("A\xf1adir",l,l,l,A.bu(s,s.Q,14,B.A),l,l),new A.aFA(k,a,j,m.d),n)],p),B.a2,q,r)},
 $S:245}
 A.aFx.prototype={
 $1(a){var s=null,r=this.a
@@ -96433,7 +96436,7 @@ A.aFA.prototype={
 $0(){var s=this,r=s.a.a.a,q=A.j2(A.eK(r,",",".")),p=A.cV(s.b,!1)
 if(q!=null&&q>0)A.eY(s.b,!1,t.W).Wg(s.c,q)
 p.eL(null)
-p.eL(null)},
+s.d.eL(null)},
 $S:0}
 A.zi.prototype={
 al(){return new A.Gg(new A.dP(B.bY,$.ao()),A.b([],t.lR),$.aTg(),A.b([],t.xk))}}
