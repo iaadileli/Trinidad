@@ -96600,10 +96600,20 @@ B.b.N(m,J.ed(n.e,new A.are(n,q),o))
 m.push(B.aR)
 o=q.y
 m.push(A.aI_(A.ez(B.Jf,o,r,r),A.ac("Crear alimento personalizado",r,r,r,A.bu(q,o,14,B.n),r,r),new A.arf(n,q)))
-B.b.N(p,m)}else{var xe=n.ajH(A.eY(a,!0,t.W))
-if(xe.length!==0){p.push(B.aR)
+B.b.N(p,m)}else{var xts=A.eY(a,!1,t.W),xxa=xts.x,xxh=A.aI(t.N),xxg=A.b([],t.lR)
+for(var xxi=xxa.length-1;xxi>=0&&xxg.length<8;xxi--){var xxq=xxa[xxi]
+if(xxq==null)continue
+var xxp=xxq.c
+if(xxh.q(0,xxp))continue
+xxh.E(0,xxp)
+var xxo=xxq.d,xxn=xxq.e,xxm=xxq.f,xxl=xxq.r,xxk=xxq.y,xxj=xxq.z,xxf=xxq.Q
+xxk=xxk==null?r:xxk*xxm
+xxj=xxj==null?r:xxj*xxm
+xxf=xxf==null?r:xxf*xxm
+xxg.push(new A.ey(xxp,xxo,xxn*xxm,xxm,xxl,r,xxk,xxj,xxf,r))}
+if(xxg.length!==0){p.push(B.aR)
 p.push(A.ac("RECIENTES",r,r,r,A.bu(q,r,12,B.A),r,r))
-B.b.N(p,A.V(new A.Y(xe,new A.ard(n,q),A.W(xe).h("Y<1,f>")),t.l7))}}p.push(B.AX)
+B.b.N(p,A.V(new A.Y(xxg,new A.ard(n,q),A.W(xxg).h("Y<1,f>")),t.l7))}}p.push(B.AX)
 q=A.kH(p,b,B.fp,r,!1)}l.push(A.co(q,1))
 return A.d2(l,B.z,B.r,B.y)},
 $S:134}
