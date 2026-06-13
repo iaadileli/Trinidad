@@ -1,11 +1,11 @@
 {
-    "name": "rutina_flutter",
-    "short_name": "rutina_flutter",
+    "name": "Trinidad",
+    "short_name": "Trinidad",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#F5EFE6",
+    "theme_color": "#F5EFE6",
+    "description": "Seguimiento de rutina y alimentación.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
