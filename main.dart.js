@@ -96483,13 +96483,19 @@ n=o.a
 if(m.q(0,n))continue
 m.E(0,n)
 r.push(o)}return r},
-agO(a){var s,r,q=B.c.cO(a).toLowerCase()
+agO(a){var s,q=B.c.cO(a).toLowerCase()
 if(q.length===0)return A.b([],t.lR)
 s=this.ga89()
-r=A.W(s).h("aH<1>")
-r=A.aHY(new A.aH(s,new A.aqV(q),r),25,r.h("p.E"))
-s=A.V(r,A.m(r).h("p.E"))
-return s},
+var xm=A.b([],t.lR)
+for(var xi=0;xi<s.length;xi++){if(s[xi].b.toLowerCase().indexOf(q)>=0)xm.push(s[xi])}
+var xck=["cocido","cocida","plancha","frito","frita","asado","asada","hervido","horneado","vapor","rebozado","empanado","salteado","guisado","estofado"]
+if(!xck.some(function(xw){return q.indexOf(xw)>=0})){var xrw=["crudo","cruda","fresco","fresca","natural"]
+xm.sort(function(xa,xb){var xna=xa.b.toLowerCase(),xnb=xb.b.toLowerCase()
+var xra=xrw.some(function(xw){return xna.indexOf(xw)>=0})
+var xrb=xrw.some(function(xw){return xnb.indexOf(xw)>=0})
+return xra===xrb?0:(xra?-1:1)})}
+if(xm.length>25)xm.length=25
+return xm},
 xW(){var s=0,r=A.Q(t.H),q=this,p
 var $async$xW=A.R(function(a,b){if(a===1)return A.N(b,r)
 for(;;)switch(s){case 0:q.a8(new A.aqL(q))
