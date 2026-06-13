@@ -80550,7 +80550,15 @@ A.a9k.prototype={
 $1(a){this.a.GA()},
 $S:110}
 A.a9b.prototype={
-$0(){},
+$0(){try{var xAC=new (window.AudioContext||window.webkitAudioContext)()
+var xPlay=function(xFreq,xDelay,xVol){var xO=xAC.createOscillator(),xG=xAC.createGain()
+xO.connect(xG);xG.connect(xAC.destination)
+xO.type="sine";xO.frequency.value=xFreq
+var xT=xAC.currentTime+xDelay
+xG.gain.setValueAtTime(xVol,xT)
+xG.gain.exponentialRampToValueAtTime(0.001,xT+1.2)
+xO.start(xT);xO.stop(xT+1.2)}
+xPlay(880,0,0.35);xPlay(1320,0,0.15);xPlay(880,0.15,0.2)}catch(xe){}},
 $S:0}
 A.a9c.prototype={
 $0(){var s=this.a
