@@ -97086,19 +97086,23 @@ A.avn.prototype={
 $0(){return this.a.ye(this.b,this.c)},
 $S:0}
 A.avk.prototype={
-$0(){var s,r,q,p,o=this,n=o.c,m=o.a,l=o.d,k=o.e,j=m.a,i=l.a
+$0(){var s,r,q,p,xPes,xRep,xRpe,o=this,n=o.c,m=o.a,l=o.d,k=o.e,j=m.a,i=l.a
 if(o.b)n.XL(j.e,i,k)
 else{j=j.e
 s=m.d
 s===$&&A.a()
 r=o.f
-s=A.avj(s[r].a.a)
+xPes=A.avj(s[r].a.a)
 q=m.e
 q===$&&A.a()
-q=A.ot(B.c.cO(q[r].a.a),null)
+xRep=A.ot(B.c.cO(q[r].a.a),null)
 p=m.f
 p===$&&A.a()
-n.Lk(j,i,s,q,A.avj(p[r].a.a),k,l.b)
+xRpe=A.avj(p[r].a.a)
+if(r>0&&xPes==null&&xRep==null&&xRpe==null){xPes=A.avj(s[r-1].a.a)
+xRep=A.ot(B.c.cO(q[r-1].a.a),null)
+xRpe=A.avj(p[r-1].a.a)}
+n.Lk(j,i,xPes,xRep,xRpe,k,l.b)
 m.a.a_r()}},
 $S:0}
 A.avf.prototype={
@@ -97119,11 +97123,7 @@ A.cV(r,!1).eL(s)
 return null},
 $S:0}
 A.a01.prototype={
-I(a){var s,r=this,q=null,p=r.d,o=B.h.d2(p,60),n=B.h.bh(p,60),m=r.c,l=A.bJ(20),k=m.b,j=A.ac("DESCANSO",q,q,q,A.dZ(m,k.hR(0.7)),q,q),i=A.ac(""+o+":"+B.c.eJ(B.h.k(n),2,"0"),q,q,q,A.fb(m,k,19,B.A),q,q),h=A.bJ(2),g=r.e
-p=g===0?0:p/g
-g=m.y
-s=t.p
-return A.bK(q,A.ch(A.b([A.co(A.d2(A.b([j,B.ey,i,B.dw,A.MD(h,A.aMK(k.hR(0.18),2,p,new A.ui(g,t.Jn)),B.bQ)],s),B.ah,B.r,B.y),1),B.jk,r.Ui(m,"+30s",k.hR(0.14),k,r.f),B.bG,r.Ui(m,"Saltar",g,m.Q,r.r)],s),B.z,B.r,B.y,0),B.m,q,q,new A.bw(m.e,q,q,l,B.N_,q,q,B.G),q,q,q,q,B.HP,q,q,q)},
+I(a){return B.nS},
 Ui(a,b,c,d,e){var s=null,r=A.bJ(8)
 return A.fW(s,A.bK(s,A.ac(b,s,s,s,A.bu(a,d,12.5,B.A),s,s),B.m,s,s,new A.bw(c,s,s,r,s,s,s,B.G),s,s,s,s,B.kI,s,s,s),B.a9,!1,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,e,s,s,s,s,s,s,!1,B.aX)}}
 A.PO.prototype={
