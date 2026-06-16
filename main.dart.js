@@ -79926,14 +79926,7 @@ if(q.a.d.gbV()){s=q.a
 r=s.c.a.b
 s=r.a===r.b&&s.as&&q.k4&&!q.gar().iW}else s=!1
 return s},
-uV(){var s,r=this
-if(!r.a.as)return
-if(!r.k4)return
-s=r.d
-if(s!=null)s.aZ(0)
-r.gkK().sn(0,1)
-if(r.a.a3)r.gkK().ve(r.gRZ()).a.a.io(r.gSt())
-else r.d=A.aI6(B.fm,new A.a9k(r))},
+uV(){return},
 GA(){var s,r=this,q=r.y1
 if(q>0){$.a4.toString
 $.b_();--q
