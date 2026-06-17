@@ -95835,11 +95835,18 @@ Dw(a,b){var s,r,q,p=Date.now(),o=A.jy("yyyy-MM-dd").hJ(new A.d3(p,0,!1)),n=A.y(t
 for(p=this.d,s=p.length,r=0;r<p.length;p.length===s||(0,A.A)(p),++r){q=p[r]
 if(q.a===o&&q.c===a&&q.d===b)n.m(0,q.f,q)}return n},
 Lk(a,b,c,d,e,f,g){var s=this,r=Date.now(),q=A.jy("yyyy-MM-dd").hJ(new A.d3(r,0,!1))
+console.time("xT_eN")
 B.b.eN(s.d,new A.a5C(q,a,b,f))
+console.timeEnd("xT_eN")
 B.b.E(s.d,new A.f_(q,Date.now(),a,b,g,f,c,d,e))
 if(c!=null)s.e.m(0,b,c)
+console.log("xT_sessions_len="+s.d.length)
+console.time("xT_hx")
 s.hx()
-s.aj()},
+console.timeEnd("xT_hx")
+console.time("xT_aj")
+s.aj()
+console.timeEnd("xT_aj")},
 axp(a,b,c,d){return this.Lk(a,b,null,null,null,c,d)},
 XL(a,b,c){var s=Date.now(),r=A.jy("yyyy-MM-dd").hJ(new A.d3(s,0,!1))
 B.b.eN(this.d,new A.a5f(r,a,b,c))
@@ -97094,8 +97101,12 @@ xRpe=A.avj(p[r].a.a)
 if(r>0&&xPes==null&&xRep==null&&xRpe==null){xPes=A.avj(s[r-1].a.a)
 xRep=A.ot(B.c.cO(q[r-1].a.a),null)
 xRpe=A.avj(p[r-1].a.a)}
+console.time("xT_Lk")
 n.Lk(j,i,xPes,xRep,xRpe,k,l.b)
-m.a.a_r()}},
+console.timeEnd("xT_Lk")
+console.time("xT_ar")
+m.a.a_r()
+console.timeEnd("xT_ar")}},
 $S:0}
 A.avf.prototype={
 $1(a){var s=this,r=null,q=s.b,p=A.ac("Nota \xb7 "+s.c.a,r,r,r,A.fw(q,16,B.A),r,r),o=s.d,n=A.mJ(!1,o,B.JR,r,r,4,r,A.bu(q,r,14,B.n),B.ab),m=s.a
